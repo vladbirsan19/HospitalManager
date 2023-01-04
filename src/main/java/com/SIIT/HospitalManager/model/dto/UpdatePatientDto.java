@@ -2,16 +2,8 @@ package com.SIIT.HospitalManager.model.dto;
 
 public class UpdatePatientDto {
 
+    Integer id;
     private Integer age;
-    private Integer id;
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
 
     public Integer getId() {
         return id;
@@ -21,11 +13,11 @@ public class UpdatePatientDto {
         this.id = id;
     }
 
-    public UpdatePatientDto() {
+    public Integer getAge() {
+        return age;
     }
 
-    public UpdatePatientDto(Integer age, Integer id) {
+    public void setAge(Integer age) {
         this.age = age;
-        this.id = id;
     }
 }

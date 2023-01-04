@@ -7,7 +7,7 @@ public class PatientDto {
         return id;
     }
 
-    public void setID(Integer id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -23,7 +23,7 @@ public class PatientDto {
         return age;
     }
 
-    public void setAge() {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
@@ -35,6 +35,6 @@ public class PatientDto {
         this.id = patient.getId();
         this.name = patient.getName();
         this.age = patient.getAge();
-
     }
+
 }
