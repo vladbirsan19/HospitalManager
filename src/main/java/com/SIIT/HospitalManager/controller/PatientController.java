@@ -25,18 +25,18 @@ public class PatientController {
         return patientService.findAll();
     }
 
-    @PostMapping
-    public void createPatient(@RequestBody @Valid CreatePatientDto createPatientDto){
-        patientService.createPatient(createPatientDto);
-    }
-
     @GetMapping("{id}")
     public PatientDto findById(@PathVariable("id") Integer id) {
         return patientService.findById(id);
     }
 
+    @PostMapping
+    public void createPatient(@RequestBody @Valid CreatePatientDto createPatientDto){
+        patientService.createPatient(createPatientDto);
+    }
+
     @PatchMapping
-    public void updatePatient(@RequestBody UpdatePatientDto updatePatientDto){
+    public void updatePatient(@RequestBody @Valid UpdatePatientDto updatePatientDto){
         patientService.updatePatient(updatePatientDto);
     }
 

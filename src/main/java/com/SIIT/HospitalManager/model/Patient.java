@@ -2,55 +2,39 @@ package com.SIIT.HospitalManager.model;
 
 import com.SIIT.HospitalManager.model.dto.CreatePatientDto;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
 
 @Entity
-@Table(name = "patients")
+@Table(name="patients")
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class Patient {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    // @GeneratedValue(strategy =GenerationType.Auto)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
+
     private String name;
+
     private Integer age;
-    //private String password;
 
-    public Patient() {
-    }
+    private String phoneNumber;
 
-    public Patient(CreatePatientDto createPatientDto) {
-        this.age = createPatientDto.getAge();
+    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL)
+    List<Appointment> appointments;
+
+    public Patient(CreatePatientDto createPatientDto){
         this.name = createPatientDto.getName();
+        this.age = createPatientDto.getAge();
+        this.phoneNumber = createPatientDto.getPhoneNumber();
     }
 
-    public Patient(Integer id, String name, Integer age) {
-        this.id = id;
-        this.name = name;
-        this.age = age;
-    }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
 
 }

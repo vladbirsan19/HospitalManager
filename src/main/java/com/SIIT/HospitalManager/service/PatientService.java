@@ -15,6 +15,7 @@ import java.util.List;
 
 @Service
 public class PatientService {
+
     private final PatientJpaRepository patientJpaRepository;
 
     public PatientService(PatientJpaRepository patientJpaRepository) {

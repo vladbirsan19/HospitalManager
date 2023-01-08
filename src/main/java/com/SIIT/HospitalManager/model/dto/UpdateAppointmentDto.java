@@ -3,16 +3,15 @@ package com.SIIT.HospitalManager.model.dto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Range;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class UpdatePatientDto {
+public class UpdateAppointmentDto {
 
-    Integer id;
-
-    @Range(min = 0, max = 120)
-    private Integer age;
+    private Integer id;
+    private LocalDateTime date;
 
 }

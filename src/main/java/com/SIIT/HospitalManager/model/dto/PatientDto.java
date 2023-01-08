@@ -1,40 +1,25 @@
 package com.SIIT.HospitalManager.model.dto;
 
 import com.SIIT.HospitalManager.model.Patient;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class PatientDto {
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
 
     private Integer id;
     private String name;
     private Integer age;
+    private String phoneNumber;
 
     public PatientDto(Patient patient) {
         this.id = patient.getId();
         this.name = patient.getName();
         this.age = patient.getAge();
+        this.phoneNumber = patient.getPhoneNumber();
     }
 
 }

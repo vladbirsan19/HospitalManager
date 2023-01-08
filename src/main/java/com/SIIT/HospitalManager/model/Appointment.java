@@ -1,50 +1,44 @@
 package com.SIIT.HospitalManager.model;
 
+import com.SIIT.HospitalManager.model.dto.AppointmentDto;
+import com.SIIT.HospitalManager.model.dto.CreateAppointmentDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "appointments")
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class Appointment {
+
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
+
     private LocalDateTime date;
+
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "patient_id", nullable = false)
+    @JsonIgnore
     private Patient patient;
 
-    public Appointment() {
+    public Appointment(CreateAppointmentDto createAppointmentDto) {
+        this.date = createAppointmentDto.getDate();
+        this.patient = createAppointmentDto.getPatient();
     }
 
-    public Appointment(Integer id, LocalDateTime date, Patient patient) {
-        this.id = id;
-        this.date = date;
-        this.patient = patient;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
+    public AppointmentDto toDto(){
+        return AppointmentDto
+                .builder()
+                .id(id)
+                .date(date)
+                .patient(patient)
+                .build();
     }
 }
