@@ -11,21 +11,27 @@
 <h2> Create patient</h2>
 <p></p>
 
-<form th:action="@{/mvc/patient/submit}" method="post" th:object="${createPatientDto}">
-    <label>Full name:</label>
-    <input type="text" th:field="*{name}" /><br/>
-    <label>Age:</label>
-    <input type="text" th:field="*{age}" /><br/>
-    <label>Phone number:</label>
-    <input type="text" th:field="*{phoneNumber}" /><br/>
-    <button type="submit">Save Patient</button>
+<form th:object="${createPatientDto}" th:action="@{/mvc/patient/submit}" method="post">
+    <div class="mb-3 w-25 p-3">
+        <label class="form-label" for="name">Name:</label>
+        <input class="form-control" type="text" id="name" th:field="*{name}"/>
+    </div>
+    <div class="mb-3 w-25 p-3">
+        <label class="form-label" for="age">Age:</label>
+        <input class="form-control" type="number" id="age" th:field="*{age}"/>
+    </div>
+    <div class="w-25 p-3 text-end">
+        <input type="submit" value="Submit" class="btn btn-primary " />
+        <br>
+    </div>
 </form>
+
+
+<p></p>
 
 <button onclick="window.location.href='/';">
     Go back
 </button>
-</body>
-</html>
 
 
 </body>

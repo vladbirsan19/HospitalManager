@@ -1,40 +1,26 @@
 package com.SIIT.HospitalManager.model;
 
-import com.SIIT.HospitalManager.model.dto.CreatePatientDto;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 @Entity
 @Table(name="patients")
-@Getter
-@Setter
+@SuperBuilder
+@Data
 @RequiredArgsConstructor
-public class Patient {
-
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer id;
-
+@PrimaryKeyJoinColumn(referencedColumnName = "id")
+public class Patient extends User{
     private String name;
-
     private Integer age;
-
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER,
-            cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     List<Appointment> appointments;
-
-    public Patient(CreatePatientDto createPatientDto){
-        this.name = createPatientDto.getName();
-        this.age = createPatientDto.getAge();
-        this.phoneNumber = createPatientDto.getPhoneNumber();
-    }
-
 
 
 }

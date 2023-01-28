@@ -1,5 +1,6 @@
 package com.SIIT.HospitalManager.config;
 
+
 import com.SIIT.HospitalManager.model.User;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
