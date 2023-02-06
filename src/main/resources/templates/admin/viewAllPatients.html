@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <title>Patient list</title>
+</head>
+<body>
+<div class="w-100 mx-auto content-between-l">
+  <h2> Patients list</h2>
+
+  <!--<table border="1" class="table table-striped">-->
+
+  <table class="table table-striped-columns w-100" style="width: 100%">
+    <colgroup>
+      <col span="1" style="width: 10%;">
+      <col span="1" style="width: 20%;">
+      <col span="1" style="width: 20%;">
+      <col span="1" style="width: 10%;">
+      <col span="1" style="width: 10%;">
+      <col span="1" style="width: 10%;">
+      <col span="1" style="width: 10%;">
+      <col span="1" style="width: 10%;">
+    </colgroup>
+    <thead>
+    <tr>
+      <th> Id</th>
+      <th> First name</th>
+      <th> Last name</th>
+      <th> Birth Date</th>
+      <th> Phone Number</th>
+      <th> Update Patient</th>
+      <th> Hide Patient</th>
+      <th> Delete Patient</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${patients.empty}">
+      <td colspan="2"> No patients registered</td>
+    </tr>
+    <tr th:each="patient : ${patients}">
+      <td>
+        <form action="#" class="patientId" th:action="@{/appointment/findAllByPatientId/} + ${{patient.id}}"
+              method="get">
+          <button class="btn btn-success" th:text="${patient.id}" th:value="${patient.id}"
+                  type="submit">
+            <i>details</i>
+          </button>
+        </form>
+      </td>
+      <form action="#" th:method="PUT" th:action="@{/mvc/patient/updatePatient/} + ${{patient.id}}" method="post">
+        <td>
+          <div class="input-group">
+            <input type="text" class="form-control" th:value="${patient.name}" th:name="name"/>
+          </div>
+        </td>
+        <td>
+          <div class="input-group">
+            <input type="text" class="form-control" th:value="${patient.name}"/>
+          </div>
+        </td>
+        <td>
+          <div class="input-group">
+            <input type="text" class="form-control" th:value="${patient.age}" th:name="age"/>
+          </div>
+        </td>
+        <td>
+          <div class="input-group">
+            <input type="text" class="form-control" th:value="${patient.phoneNumber}" th:name="phoneNumber"/>
+          </div>
+        </td>
+        <td>
+          <div class="input-group-append">
+            <button class="btn btn-outline-warning" type="submit">Update</button>
+          </div>
+        </td>
+      </form>
+      <td>
+        <button class="hide-patient-button"> Hide toDo</button>
+      </td>
+      <td>
+        <button class="delete-patient-button"> Delete patient</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <p></p>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+          crossorigin="anonymous"></script>
+
+  <script>
+    const deleteButtons = document.querySelectorAll('.delete-patient-button');
+    deleteButtons.forEach(function(deleteButton) {
+        deleteButton.addEventListener("click", function() {
+            if (confirm("By doing this, all appointments related to the patient will be deleted as well. Are you sure you want to delete this patient?")) {
+                const patientId = this.parentNode.parentNode.querySelector(".patientId").textContent;
+                fetch('/mvc/patient/' + patientId, {
+                    method: 'DELETE'
+                }).then(function(response) {
+                    if (response.ok) {
+                        alert("Patient deleted successfully");
+                        location.reload(); // Reload the page to update the table
+                    } else {
+                        alert("Error deleting patient");
+                    }
+                });
+            }
+        });
+    });
+
+
+
+    </script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+          crossorigin="anonymous"></script>
+
+  <button class="btn btn-secondary" onclick="window.location.href='/dashboard';">
+    Main Menu
+  </button>
+  <p></p>
+  <button class="btn btn-secondary" onclick="window.location.href='/logout';">
+    Sign out
+  </button>
+</div>
+</body>
+</html>

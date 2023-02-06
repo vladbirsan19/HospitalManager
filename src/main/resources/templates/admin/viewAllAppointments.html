@@ -8,6 +8,7 @@
 </head>
 <body>
 <div class="w-100 mx-auto content-between-l">
+
   <h2> Appointments list</h2>
 
   <!--<table border="1" class="table table-striped">-->
@@ -19,6 +20,8 @@
       <th> Date</th>
       <th> Doctor name</th>
       <th> Doctor specialisation</th>
+      <th> Patient name</th>
+      <th> Patient phone number</th>
       <th> Delete</th>
     </tr>
     </thead>
@@ -31,6 +34,8 @@
       <td th:text="${appointment.date}"> Date</td>
       <td th:text="${appointment.doctor.name}"> Doctor name</td>
       <td th:text="${appointment.doctor.specialisation.name}"> Specialisation name</td>
+      <td th:text="${appointment.patient.name}"> Patient name</td>
+      <td th:text="${appointment.patient.phoneNumber}"> Patient phone number</td>
       <td>
         <button class="delete-appointment-button"> Delete appointment</button>
       </td>
@@ -69,8 +74,6 @@
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-  <button class="btn btn-primary" onclick="history.back()">Go Back</button>
-  <p></p>
   <button class="btn btn-secondary" onclick="window.location.href='/dashboard';">
     Main Menu
   </button>

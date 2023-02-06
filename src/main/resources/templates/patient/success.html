@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Virtual Clinic</title>
+</head>
+<body>
+<div class="w-100 mx-auto content-between-l">
+    <h3>Patient created successfully!</h3>
+
+    <div th:object="${createPatientDto}">
+        <p th:text="'Name: ' + *{name}"></p>
+        <p th:text="'Age: ' + *{age}"></p>
+        <p th:text="'Phone Number: ' + *{phoneNumber}"></p>
+    </div>
+    <p></p>
+    <button class="btn btn-primary" onclick="history.back()">Go Back</button>
+    <p></p>
+    <button class="btn btn-secondary" onclick="window.location.href='/dashboard';">
+        Main Menu
+    </button>
+    <p></p>
+    <button class="btn btn-secondary" onclick="window.location.href='/logout';">
+        Sign out
+    </button>
+</div>
+</body>
+</html>

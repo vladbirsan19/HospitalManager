@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <title>Doctors list</title>
+</head>
+<body>
+<div class="w-100 mx-auto content-between-l">
+  <h2> Doctors list</h2>
+
+  <!--<table border="1" class="table table-striped">-->
+
+  <table class="table table-striped-columns w-100" style="width: 100%">
+    <colgroup>
+      <col span="1" style="width: 10%;">
+      <col span="1" style="width: 20%;">
+      <col span="1" style="width: 20%;">
+      <col span="1" style="width: 30%;">
+      <col span="1" style="width: 10%;">
+      <col span="1" style="width: 10%;">
+    </colgroup>
+    <thead>
+    <tr>
+      <th> Doctor Id</th>
+      <th> First Name</th>
+      <th> Last Name</th>
+      <th> Specialisation</th>
+      <th> Hide doctor</th>
+      <th> Delete doctor</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${doctors.empty}">
+      <td colspan="2"> No doctors registered</td>
+    </tr>
+    <tr th:each="doctor : ${doctors}">
+      <td>
+        <form class="doctorId" action="#" th:action="@{/mvc/doctor/viewDoctorProfile/} + ${{doctor.id}}" method="get">
+          <button class="btn btn-success" th:text="${doctor.id}" th:value="${doctor.id}"
+                  type="submit">
+            <i>details</i>
+          </button>
+        </form>
+      </td>
+      <td>
+        <form action="#" th:action="@{/mvc/doctor/changeName/} + ${{doctor.id}}" method="post">
+          <div class="input-group">
+            <input type="text" class="form-control" th:value="${doctor.name}" th:name="name"/>
+            <div class="input-group-append">
+              <button class="btn btn-outline-warning" type="submit">Update</button>
+            </div>
+          </div>
+        </form>
+      </td>
+      <td>
+        <form action="#" th:action="@{/mvc/doctor/changeName/} + ${{doctor.id}}" method="post">
+          <div class="input-group">
+            <input type="text" class="form-control" th:value="${doctor.name}" th:name="name"/>
+            <div class="input-group-append">
+              <button class="btn btn-outline-warning" type="submit">Update</button>
+            </div>
+          </div>
+        </form>
+      </td>
+      <td>
+        <form action="#" th:action="@{/mvc/doctor/changeSpecialisation/} + ${{doctor.id}}" method="post">
+          <div class="input-group">
+            <select class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false" th:object="${specialisation}" th:name="name">Dropdown
+              <option th:text="${doctor.specialisation.name}"></option>
+              <option th:each="specialisation : ${specialisations}"
+                      th:text="${specialisation.name}"></option>
+            </select>
+            <div class="input-group-append">
+              <button class="btn btn-outline-warning" type="submit">Update</button>
+            </div>
+          </div>
+        </form>
+      </td>
+      <td>
+        <button class="hide-doctor-button"> Hide doctor toDo</button>
+      </td>
+      <td>
+        <button class="delete-doctor-button"> Delete doctor</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <p></p>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+          crossorigin="anonymous"></script>
+
+  <script>
+    const deleteButtons = document.querySelectorAll('.delete-doctor-button');
+    deleteButtons.forEach(function(deleteButton) {
+        deleteButton.addEventListener("click", function() {
+            if (confirm("By doing this, all appointments related to the doctor will be deleted as well. Are you sure you want to delete this doctor?")) {
+                const doctorId = this.parentNode.parentNode.querySelector(".doctorId").textContent;
+                fetch('/mvc/doctor/' + doctorId, {
+                    method: 'DELETE'
+                }).then(function(response) {
+                    if (response.ok) {
+                        alert("Doctor deleted successfully");
+                        location.reload(); // Reload the page to update the table
+                    } else {
+                        alert("Error deleting doctor");
+                    }
+                });
+            }
+        });
+    });
+
+
+
+    </script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+          crossorigin="anonymous"></script>
+
+  <button class="btn btn-secondary" onclick="window.location.href='/dashboard';">
+    Main Menu
+  </button>
+  <p></p>
+
+  <button class="btn btn-secondary" onclick="window.location.href='/logout';">
+    Sign out
+  </button>
+</div>
+</body>
+</html>

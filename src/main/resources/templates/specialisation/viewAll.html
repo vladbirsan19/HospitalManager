@@ -4,48 +4,48 @@
   <meta charset="UTF-8">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-  <title>Doctors list</title>
+  <title>Specialisations list</title>
 </head>
 <body>
 <div class="w-100 mx-auto content-between-l">
-  <h2> Doctors list</h2>
+
+  <h2> Specialisations list</h2>
 
   <!--<table border="1" class="table table-striped">-->
 
-  <table class="table table-striped-columns w-100">
+  <table class="table table-striped-columns w-50">
     <thead>
     <tr>
-      <th> Id</th>
-      <th> Name</th>
-      <th> Specialisation</th>
-      <th> Delete</th>
+      <th> Specialisation Name</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:if="${doctors.empty}">
-      <td colspan="2"> No doctors registered</td>
+    <tr th:if="${specialisations.isEmpty()}">
+      <td colspan="2"> No specialisations yet</td>
     </tr>
-    <tr th:each="doctor : ${doctors}">
-      <td><span th:text="${doctor.id}"> Id </span></td>
-      <td><span th:text="${doctor.name}"> Name </span></td>
-      <td><span th:text="${doctor.specialisation.name}"> Specialisation </span></td>
+    <tr th:each="specialisation : ${specialisations}">
+      <td>
+        <form action="#" th:action="@{/mvc/doctor/viewDoctorsBySpecialisation/} + ${{specialisation.id}}"
+              method="get">
+          <button class="btn btn-success" th:text="${specialisation.name}" th:value="${specialisation.name}"
+                  type="submit">
+            <i>Specialisation Name</i>
+          </button>
+        </form>
+      </td>
     </tr>
     </tbody>
   </table>
 
   <p></p>
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-          crossorigin="anonymous"></script>
   <button class="btn btn-primary" onclick="history.back()">Go Back</button>
+
   <p></p>
   <button class="btn btn-secondary" onclick="window.location.href='/dashboard';">
     Main Menu
   </button>
   <p></p>
-
   <button class="btn btn-secondary" onclick="window.location.href='/logout';">
     Sign out
   </button>
