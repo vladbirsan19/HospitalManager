@@ -1,7 +1,8 @@
-package com.siit.hospital_manager.controller;
+package com.siit.hospital_manager.controller.api;
 
 import com.siit.hospital_manager.model.dto.CreatePatientDto;
 import com.siit.hospital_manager.model.dto.PatientDto;
+import com.siit.hospital_manager.model.dto.UpdatePatientDto;
 import com.siit.hospital_manager.service.PatientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/patient")
+@RequestMapping("/api/patient")
 public class PatientApiController {
 
     private final PatientService patientService;
@@ -40,6 +41,11 @@ public class PatientApiController {
     )
     public ResponseEntity createUser(@Valid @RequestBody CreatePatientDto createPatientDto){
         return ResponseEntity.status(201).body(Map.of("Id", patientService.createPatient(createPatientDto)));
+    }
+
+    @PatchMapping
+    public void updatePatient(@RequestBody @Valid UpdatePatientDto updatePatientDto){
+        patientService.updatePatient(updatePatientDto);
     }
 
 }

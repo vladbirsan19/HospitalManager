@@ -26,8 +26,9 @@
     </tr>
     <tr th:each="patient : ${patients}">
         <td><span th:text="${patient.id}"> Id </span></td>
-        <td><span th:text="${patient.name}"> Name </span></td>
-        <td><span th:text="${patient.phoneNumber}"> PhoneNumber </span></td>
+        <td><span th:text="${patient.firstName}"> First Name </span></td>
+        <td><span th:text="${patient.lastName}"> Last Name </span></td>
+        <td><span th:text="${patient.phoneNumber}"> Phone Number </span></td>
     </tr>
     </tbody>
     </table>
