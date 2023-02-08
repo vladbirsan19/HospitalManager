@@ -20,7 +20,9 @@
       <th> Date</th>
       <th> Doctor name</th>
       <th> Doctor specialisation</th>
-      <th> Patient name</th>
+      <th> Patient first name</th>
+      <th> Patient last name</th>
+      <th> Patient eMail</th>
       <th> Patient phone number</th>
       <th> Delete</th>
     </tr>
@@ -32,9 +34,26 @@
     <tr th:each="appointment : ${appointments}">
       <td class="appointmentId" th:text="${appointment.id}"> Id</td>
       <td th:text="${appointment.date}"> Date</td>
-      <td th:text="${appointment.doctor.name}"> Doctor name</td>
+      <td>
+        <form action="#" class="doctorId" th:action="@{/mvc/doctor/viewDoctorProfile/} + ${{appointment.doctor.id}}" method="get">
+          <button class="btn btn-success" th:text="${appointment.doctor.name}" th:value="${appointment.doctor.name}"
+                  type="submit">
+            <i>details</i>
+          </button>
+        </form>
+      </td>
       <td th:text="${appointment.doctor.specialisation.name}"> Specialisation name</td>
-      <td th:text="${appointment.patient.name}"> Patient name</td>
+      <td th:text="${appointment.patient.firstName}"> Patient first name</td>
+      <td th:text="${appointment.patient.lastName}"> Patient last name</td>
+      <td>
+        <form action="#" class="patientId" th:action="@{/appointment/findAllByPatientId/} + ${{appointment.patient.id}}"
+              method="get">
+          <button class="btn btn-success" th:text="${appointment.patient.email}" th:value="${appointment.patient.email}"
+                  type="submit">
+            <i>details</i>
+          </button>
+        </form>
+      </td>
       <td th:text="${appointment.patient.phoneNumber}"> Patient phone number</td>
       <td>
         <button class="delete-appointment-button"> Delete appointment</button>

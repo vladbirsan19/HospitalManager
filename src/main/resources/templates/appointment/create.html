@@ -8,7 +8,7 @@
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 </head>
 <body>
-<div class="w-50 mx-auto content-between-l">
+<div class="w-100 mx-auto content-between-l">
 
   <h2> Create Appointment</h2>
   <p></p>
@@ -18,14 +18,22 @@
     <tr>
       <th> Doctor Name</th>
       <th> Doctor Specialisation</th>
-      <th> Patient Name</th>
+      <th> Patient First Name</th>
+      <th> Patient Last Name</th>
+      <th> Patient Age</th>
+      <th> Patient eMail</th>
+      <th> Patient phone number</th>
     </tr>
     </thead>
     <tbody>
     <tr>
       <td><span th:text="${createAppointmentDto.doctor.name}"> Doctor Name </span></td>
       <td><span th:text="${createAppointmentDto.doctor.specialisation.name}"> Doctor Specialisation </span></td>
-      <td><span th:text="${createAppointmentDto.patient.name}"> Patient Name </span></td>
+      <td><span th:text="${createAppointmentDto.patient.firstName}"> Patient First Name </span></td>
+      <td><span th:text="${createAppointmentDto.patient.lastName}"> Patient Last Name </span></td>
+      <td><span th:text="${createAppointmentDto.patient.age}"> Patient Age </span></td>
+      <td><span th:text="${createAppointmentDto.patient.email}"> Patient eMail </span></td>
+      <td><span th:text="${createAppointmentDto.patient.phoneNumber}"> Patient phone number </span></td>
     </tr>
     </tbody>
   </table>

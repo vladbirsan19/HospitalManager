@@ -15,17 +15,15 @@
   <table class="table table-striped-columns w-100" style="width: 100%">
     <colgroup>
       <col span="1" style="width: 10%;">
-      <col span="1" style="width: 20%;">
-      <col span="1" style="width: 20%;">
-      <col span="1" style="width: 30%;">
+      <col span="1" style="width: 35%;">
+      <col span="1" style="width: 35%;">
       <col span="1" style="width: 10%;">
       <col span="1" style="width: 10%;">
     </colgroup>
     <thead>
     <tr>
       <th> Doctor Id</th>
-      <th> First Name</th>
-      <th> Last Name</th>
+      <th> Doctor Name</th>
       <th> Specialisation</th>
       <th> Hide doctor</th>
       <th> Delete doctor</th>
@@ -42,16 +40,6 @@
                   type="submit">
             <i>details</i>
           </button>
-        </form>
-      </td>
-      <td>
-        <form action="#" th:action="@{/mvc/doctor/changeName/} + ${{doctor.id}}" method="post">
-          <div class="input-group">
-            <input type="text" class="form-control" th:value="${doctor.name}" th:name="name"/>
-            <div class="input-group-append">
-              <button class="btn btn-outline-warning" type="submit">Update</button>
-            </div>
-          </div>
         </form>
       </td>
       <td>
