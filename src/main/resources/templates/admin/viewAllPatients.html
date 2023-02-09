@@ -15,10 +15,10 @@
   <table class="table table-striped-columns w-100" style="width: 100%">
     <colgroup>
       <col span="1" style="width: 10%;">
-      <col span="1" style="width: 20%;">
-      <col span="1" style="width: 20%;">
+      <col span="1" style="width: 17%;">
+      <col span="1" style="width: 17%;">
       <col span="1" style="width: 10%;">
-      <col span="1" style="width: 10%;">
+      <col span="1" style="width: 16%;">
       <col span="1" style="width: 10%;">
       <col span="1" style="width: 10%;">
       <col span="1" style="width: 10%;">
@@ -29,6 +29,7 @@
       <th> First name</th>
       <th> Last name</th>
       <th> Birth Date</th>
+      <th> eMail</th>
       <th> Phone Number</th>
       <th> Update Patient</th>
       <th> Hide Patient</th>
@@ -52,17 +53,22 @@
       <form action="#" th:method="PUT" th:action="@{/mvc/patient/updatePatient/} + ${{patient.id}}" method="post">
         <td>
           <div class="input-group">
-            <input type="text" class="form-control" th:value="${patient.name}" th:name="name"/>
+            <input type="text" class="form-control" th:value="${patient.firstName}" th:name="firstName"/>
           </div>
         </td>
         <td>
           <div class="input-group">
-            <input type="text" class="form-control" th:value="${patient.name}"/>
+            <input type="text" class="form-control" th:value="${patient.lastName}" th:name="lastName"/>
           </div>
         </td>
         <td>
           <div class="input-group">
             <input type="text" class="form-control" th:value="${patient.age}" th:name="age"/>
+          </div>
+        </td>
+        <td>
+          <div class="input-group">
+            <input type="text" class="form-control" th:value="${patient.email}" th:name="email"/>
           </div>
         </td>
         <td>

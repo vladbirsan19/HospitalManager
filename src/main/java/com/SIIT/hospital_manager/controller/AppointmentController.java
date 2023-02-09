@@ -3,7 +3,6 @@ package com.siit.hospital_manager.controller;
 import com.siit.hospital_manager.model.dto.AppointmentDto;
 import com.siit.hospital_manager.model.dto.CreateAppointmentDto;
 import com.siit.hospital_manager.service.AppointmentService;
-import com.siit.hospital_manager.util.AuthUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.util.List;
@@ -87,7 +87,12 @@ public class AppointmentController {
         }
         appointmentService.addDoctorToCreateAppointmentDto(createAppointmentDto, id);
         appointmentService.addPatientToCreateAppointmentDto(createAppointmentDto, principal.getName());
-        appointmentService.createAppointment(createAppointmentDto);
+        try {
+            appointmentService.createAppointment(createAppointmentDto);
+        }
+        catch (ResponseStatusException exception){
+            return "/entityExistsError";
+        }
         return "redirect:/appointment/findAllByUserName";
     }
 

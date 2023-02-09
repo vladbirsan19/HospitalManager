@@ -6,6 +6,8 @@ import com.siit.hospital_manager.model.dto.PatientDto;
 import com.siit.hospital_manager.service.PatientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
+import static com.siit.hospital_manager.util.AuthUtils.isAdmin;
 
 
 @Controller
@@ -24,10 +27,12 @@ public class PatientMvcController {
 
     private final PatientService patientService;
     @GetMapping("viewAll")
-    public String getAllPatients(Model model){
+    public String getAllPatients(Model model, Authentication authentication) {
         List<PatientDto> patientsList = patientService.findAll();
         model.addAttribute("patients", patientsList);
-        return "patient/viewAll";
+        if (isAdmin(authentication)) {
+            return "admin/viewAllPatients";
+        } else return "patient/viewAll";
     }
 
     @GetMapping("/create")
@@ -41,7 +46,7 @@ public class PatientMvcController {
     @PostMapping("/submitCreatePatientForm")
     public String submitCreatePatientForm (@Valid CreatePatientDto createPatientDto, BindingResult bindingResult , RedirectAttributes redirectAttributes){
         if (bindingResult.hasErrors()) {
-            return "/validationError";
+            return "patient/validationError";
         }
         try {
             patientService.createPatient(createPatientDto);
@@ -51,6 +56,21 @@ public class PatientMvcController {
         }
         redirectAttributes.addFlashAttribute("successMessage", "Account created successfully");
         return "redirect:/dashboard";
+    }
+
+    @PutMapping(value = "/updatePatient/{Id}")
+    public String updatePatient(@PathVariable("Id") Integer id, @Valid @ModelAttribute("patient") com.siit.hospital_manager.model.dto.UpdatePatientDto updatePatientDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "patient/validationError";
+        }
+        patientService.updatePatient(updatePatientDto, id);
+        return "redirect:/mvc/patient/viewAll";
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void deletePatientById(@PathVariable Integer id) {
+        patientService.deletePatientById(id);
     }
 
 }

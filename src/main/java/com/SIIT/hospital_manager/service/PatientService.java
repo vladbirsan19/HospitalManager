@@ -39,11 +39,6 @@ public class PatientService {
         return new PatientDto(patient);
     }
 
-    public Patient findByUserName(String userName) {
-        return patientRepository.findByUserName(userName).orElseThrow(
-                () -> new BusinessException(HttpStatus.NOT_FOUND, "Invalid patient id"));
-    }
-
     @Transactional
     public Integer createPatient(CreatePatientDto createPatientDto) {
 
@@ -66,15 +61,27 @@ public class PatientService {
         return userRepository.save(patient).getId();
     }
 
-    public void updatePatient(UpdatePatientDto updatePatientDto) {
+    public Patient updatePatient(UpdatePatientDto updatePatientDto, Integer id) {
         Patient patient = patientRepository
-                .findById(updatePatientDto.getId())
-                .orElseThrow(() -> new BusinessException(HttpStatus.BAD_REQUEST, "Patient with id " + updatePatientDto.getId() + " not found"));
-
+                .findById(id)
+                .orElseThrow(() -> new BusinessException(HttpStatus.BAD_REQUEST, "Patient with id " + id + " not found"));
+        if (updatePatientDto.getFirstName() != null) {
+            patient.setFirstName(updatePatientDto.getFirstName());
+        }
+        if (updatePatientDto.getLastName() != null) {
+            patient.setLastName(updatePatientDto.getLastName());
+        }
         if (updatePatientDto.getAge() != null) {
             patient.setAge(updatePatientDto.getAge());
         }
+        if (updatePatientDto.getEmail() != null) {
+            patient.setEmail(updatePatientDto.getEmail());
+        }
+        if (updatePatientDto.getPhoneNumber() != null) {
+            patient.setPhoneNumber(updatePatientDto.getPhoneNumber());
+        }
         patientRepository.save(patient);
+        return patient;
     }
 
     public void deletePatientById(Integer id) {

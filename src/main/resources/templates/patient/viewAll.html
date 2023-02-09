@@ -12,25 +12,30 @@
 
     <!--<table border="1" class="table table-striped">-->
 
-    <table class="table table-striped-columns w-50">
-    <thead>
-    <tr>
-        <th> Id</th>
-        <th> Name</th>
-        <th> PhoneNumber</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:if="${patients.empty}">
-        <td colspan="2"> No patients registered</td>
-    </tr>
-    <tr th:each="patient : ${patients}">
-        <td><span th:text="${patient.id}"> Id </span></td>
-        <td><span th:text="${patient.firstName}"> First Name </span></td>
-        <td><span th:text="${patient.lastName}"> Last Name </span></td>
-        <td><span th:text="${patient.phoneNumber}"> Phone Number </span></td>
-    </tr>
-    </tbody>
+    <table class="table table-striped-columns w-100">
+        <thead>
+        <tr>
+            <th> Id</th>
+            <th> First Name</th>
+            <th> Last Name</th>
+            <th> Age</th>
+            <th> eMail</th>
+            <th> PhoneNumber</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${patients.empty}">
+            <td colspan="2"> No patients registered</td>
+        </tr>
+        <tr th:each="patient : ${patients}">
+            <td><span th:text="${patient.id}"> Id </span></td>
+            <td><span th:text="${patient.firstName}"> First Name </span></td>
+            <td><span th:text="${patient.lastName}"> Last Name </span></td>
+            <td><span th:text="${patient.age}"> Age </span></td>
+            <td><span th:text="${patient.email}"> eMail </span></td>
+            <td><span th:text="${patient.phoneNumber}"> Phone Number </span></td>
+        </tr>
+        </tbody>
     </table>
 
     <p></p>

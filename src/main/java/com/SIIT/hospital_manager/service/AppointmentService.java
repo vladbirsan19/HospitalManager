@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -121,7 +122,7 @@ public class AppointmentService {
     public Integer createAppointment(CreateAppointmentDto createAppointmentDto) {
         appointmentRepository
                 .findByDate(createAppointmentDto.getDate())
-                .ifPresent(s -> {throw new BusinessException(HttpStatus.NOT_FOUND, "Appointment with the date " + createAppointmentDto.getDate() + " is already present");
+                .ifPresent(s -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Appointment with the date " + createAppointmentDto.getDate() + " is already present");
                 });
         if (LocalDateTime.now().isAfter(createAppointmentDto.getDate())) {
             throw new BusinessException(HttpStatus.NOT_FOUND, "Appointments can be created starting with current date and time " + LocalDateTime.now());

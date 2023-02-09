@@ -20,7 +20,10 @@
       <th> Date</th>
       <th> Doctor name</th>
       <th> Doctor specialisation</th>
-      <th> Patient name</th>
+      <th> Patient first name</th>
+      <th> Patient last name</th>
+      <th> Patient age</th>
+      <th> Patient eMail</th>
       <th> Patient phone number</th>
       <th> Delete</th>
     </tr>
@@ -34,7 +37,10 @@
       <td th:text="${appointment.date}"> Date</td>
       <td th:text="${appointment.doctor.name}"> Doctor name</td>
       <td th:text="${appointment.doctor.specialisation.name}"> Specialisation name</td>
-      <td th:text="${appointment.patient.name}"> Patient name</td>
+      <td th:text="${appointment.patient.firstName}"> Patient first name</td>
+      <td th:text="${appointment.patient.lastName}"> Patient last name</td>
+      <td th:text="${appointment.patient.age}"> Patient age</td>
+      <td th:text="${appointment.patient.email}"> Patient eMail</td>
       <td th:text="${appointment.patient.phoneNumber}"> Patient phone number</td>
       <td>
         <button class="delete-appointment-button"> Delete appointment</button>
