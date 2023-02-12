@@ -1,6 +1,7 @@
 package com.SIIT.hospital_manager.model.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
@@ -8,9 +9,11 @@ import org.hibernate.validator.constraints.Range;
 
 @Data
 public class CreatePatientDto {
+    @NotEmpty(message = "UserName can not be empty")
     @NotNull(message = "UserName can not be null")
     private String userName;
 
+    @NotEmpty(message = "Password can not be empty")
     @NotNull(message = "Password can not be null")
     private String password;
 

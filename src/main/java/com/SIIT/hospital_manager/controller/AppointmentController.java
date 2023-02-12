@@ -31,7 +31,7 @@ public class AppointmentController {
     @GetMapping("/findAllByUserName")
     public String findAllByUserName(Model model, Principal principal, Authentication authentication) {
         if (isPatient(authentication)) {
-            List<AppointmentDto> appointmentsList = appointmentService.findAllByPatientUserName(principal.getName());
+            List<AppointmentDto> appointmentsList = appointmentService.findAllByPatientUserNameAndActiveDoctor(principal.getName());
             model.addAttribute("appointments", appointmentsList);
             return "appointment/viewAll";
         } else if (isDoctor(authentication)) {
@@ -59,7 +59,7 @@ public class AppointmentController {
         if (isAdmin(authentication)) {
             List<AppointmentDto> appointmentsList = appointmentService.findAllByDoctorId(id);
             model.addAttribute("appointments", appointmentsList);
-            return "admin/viewPatientAppointments";}
+            return "admin/viewDoctorAppointments";}
         return "index";
     }
 

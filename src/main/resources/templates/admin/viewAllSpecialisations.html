@@ -1,72 +1,78 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="UTF-8">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-  <title>Specialisations list</title>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <title>Specialisations list</title>
 </head>
 <body>
 <div class="w-100 mx-auto content-between-l">
 
-  <h2> Specialisations list</h2>
+    <h2> Specialisations list</h2>
 
-  <!--<table border="1" class="table table-striped">-->
+    <table class="table table-striped-columns w-100 align-middle" style="width: 100%">
+        <colgroup>
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 25%;">
+            <col span="1" style="width: 35%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 10%;">
+        </colgroup>
+        <thead>
+        <tr class="align-top">
+            <th> Specialisation ID</th>
+            <th> Select Specialisation</th>
+            <th> Edit specialisation Name</th>
+            <th> Hide specialisation</th>
+            <th> Update specialisation</th>
+            <th> Delete specialisation</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${specialisations.isEmpty()}">
+            <td colspan="2"> No specialisations yet</td>
+        </tr>
+        <tr th:each="specialisation : ${specialisations}">
+            <td class="specialisationId" th:text="${specialisation.id}"> Specialisation ID></td>
+            <td>
+                <form action="#" th:action="@{/mvc/doctor/viewDoctorsBySpecialisation/} + ${{specialisation.id}}"
+                      method="get">
+                    <button th:if="${specialisation.isActive}" class="btn btn-success" th:text="${specialisation.name}" th:value="${specialisation.name}"></button>
+                    <button th:unless="${specialisation.isActive}" class="btn btn-light" th:text="${specialisation.name}" th:value="${specialisation.name}">
+                            type="submit">
+                    </button>
+                </form>
+            </td>
+            <form action="#" th:method="PUT" th:action="@{/specialisation/} + ${{specialisation.id}}" method="post">
+                <td>
+                    <div class="input-group">
+                        <input th:if="${specialisation.isActive}" type="text" class="form-control" th:value="${specialisation.name}" th:name="name"/>
+                        <input th:unless="${specialisation.isActive}" type="text" class="form-control" th:value="${specialisation.name}" th:name="name" readonly/>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" id="flexSwitchCheckDefault" type="checkbox"
+                               th:checked="${!specialisation.isActive}" name="isActive">
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-warning" type="submit">Update</button>
+                    </div>
+                </td>
+            </form>
+            <td>
+                <button class="delete-specialisation-button">Delete</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-  <table class="table table-striped-columns w-100" style="width: 100%">
-    <colgroup>
-      <col span="1" style="width: 10%;">
-      <col span="1" style="width: 25%;">
-      <col span="1" style="width: 35%;">
-      <col span="1" style="width: 15%;">
-      <col span="1" style="width: 15%;">
-    </colgroup>
-    <thead>
-    <tr>
-      <th> Specialisation ID</th>
-      <th> Select Specialisation</th>
-      <th> Edit specialisation Name</th>
-      <th> Hide specialisation</th>
-      <th> Delete specialisation</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:if="${specialisations.isEmpty()}">
-      <td colspan="2"> No specialisations yet</td>
-    </tr>
-    <tr th:each="specialisation : ${specialisations}">
-      <td class="specialisationId" th:text="${specialisation.id}"> Specialisation ID></td>
-      <td>
-        <form action="#" th:action="@{/mvc/doctor/viewDoctorsBySpecialisation/} + ${{specialisation.id}}"
-              method="get">
-          <button class="btn btn-success" th:text="${specialisation.name}" th:value="${specialisation.name}"
-                  type="submit">
-            <i>Specialisation Name</i>
-          </button>
-        </form>
-      </td>
-      <td>
-        <form action="#" th:action="@{/specialisation/} + ${{specialisation.id}}" method="post">
-          <div class="input-group">
-            <input type="text" class="form-control" th:value="${specialisation.name}" th:name="name"/>
-            <div class="input-group-append">
-              <button class="btn btn-outline-warning" type="submit">Update name</button>
-            </div>
-          </div>
-        </form>
-      </td>
-      <td>
-        <button class="hide-specialisation-button"> Hide toDo</button>
-      </td>
-      <td>
-        <button class="delete-specialisation-button"> Delete specialisation</button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-
-  <p></p>
-  <script>
+    <p></p>
+    <script>
     const deleteButtons = document.querySelectorAll('.delete-specialisation-button');
     deleteButtons.forEach(function(deleteButton) {
         deleteButton.addEventListener("click", function() {
@@ -89,27 +95,28 @@
 
 
 
+
     </script>
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-          crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+            crossorigin="anonymous"></script>
 
-  <button class="btn btn-danger" onclick="window.location.href='/specialisation/create';">
-    <i>Create new specialisation</i>
-  </button>
+    <button class="btn btn-danger" onclick="window.location.href='/specialisation/create';">
+        <i>Create new specialisation</i>
+    </button>
 
-  <p></p>
-  <button class="btn btn-secondary" onclick="window.location.href='/dashboard';">
-    Main Menu
-  </button>
-  <p></p>
-  <button class="btn btn-secondary" onclick="window.location.href='/logout';">
-    Sign out
-  </button>
+    <p></p>
+    <button class="btn btn-secondary" onclick="window.location.href='/dashboard';">
+        Main Menu
+    </button>
+    <p></p>
+    <button class="btn btn-secondary" onclick="window.location.href='/logout';">
+        Sign out
+    </button>
 </div>
 </body>
 </html>

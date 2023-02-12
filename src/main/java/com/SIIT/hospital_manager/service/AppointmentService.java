@@ -48,12 +48,12 @@ public class AppointmentService {
                 .toList();
     }
 
-    public List<AppointmentDto> findAllByPatientUserName(String userName) {
+    public List<AppointmentDto> findAllByPatientUserNameAndActiveDoctor(String userName) {
         User patient = userRepository.findByUserName(userName).orElseThrow(
                 () -> new BusinessException(HttpStatus.NOT_FOUND, "User not found")
         );
 
-        List<Appointment> appointments = appointmentRepository.findAllByPatientId(patient.getId());
+        List<Appointment> appointments = appointmentRepository.findAllByPatientIdAndDoctorIsActive(patient.getId(), true);
         return appointments.stream()
                 .map(Appointment::toDto)
                 .toList();
@@ -64,7 +64,7 @@ public class AppointmentService {
                 () -> new BusinessException(HttpStatus.NOT_FOUND, "User not found")
         );
 
-        List<Appointment> appointments = appointmentRepository.findAllByDoctorId(doctor.getId());
+        List<Appointment> appointments = appointmentRepository.findAllByDoctorIdAndPatientIsActive(doctor.getId(), true);
         return appointments.stream()
                 .map(Appointment::toDto)
                 .toList();
@@ -96,28 +96,6 @@ public class AppointmentService {
     public void deleteAppointmentById(Integer id) {
         appointmentRepository.deleteByIdNativeQuery(id);
     }
-
-//    public void deleteAppointmentByDoctorId(Integer id) {
-//        List<Appointment> appointments = appointmentRepository.findAllByDoctorId(id);
-//            appointments
-//                .forEach(appointmentRepository::delete);
-//    }
-
-//    public void deleteAppointmentByPatientId(Integer id) {
-//        List<Appointment> appointments = appointmentRepository.findAllByPatientId(id);
-//        appointments
-//                .forEach(appointmentRepository::delete);
-//    }
-
-//    public void deleteAppointmentByDoctorSpecialisationId(Integer id) {
-//        Specialisation specialisation = specialisationRepository
-//                .findById(id)
-//                .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "Specialisation with Id " + id + " not found"));
-//        List<Doctor> doctors = doctorRepository.findAllBySpecialisation(specialisation);
-//        for (Doctor doctor : doctors) {
-//            deleteAppointmentByDoctorId(doctor.getId());
-//        }
-//    }
 
     public Integer createAppointment(CreateAppointmentDto createAppointmentDto) {
         appointmentRepository

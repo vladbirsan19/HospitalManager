@@ -9,17 +9,19 @@
 <body>
 <div class="w-100 mx-auto content-between-l">
 
-    <h2 th:if="${appointments.isEmpty()}">Patient Appointments List </h2>
-    <h2 th:unless="${appointments.isEmpty()}" th:text="'Patient id and name: ' + ${appointments[0].patient.id} + ' - ' + ${appointments[0].patient.firstName} + ' ' + ${appointments[0].patient.lastName} + ' appointments list'"></h2>
+
+    <h2 th:if="${appointments.isEmpty()}">Doctor Appointments List </h2>
+    <h2 th:unless="${appointments.isEmpty()}" th:text="'Doctor id and name: ' + ${appointments[0].doctor.id} + ' - ' +${appointments[0].doctor.name} + ' appointments list for ' + ${appointments[0].doctor.specialisation.name} + ' specialisation'">
+    </h2>
 
     <table class="table table-striped-columns w-100 align-middle">
         <thead>
         <tr class="align-top">
             <th> Id</th>
             <th> Date</th>
-            <th> Doctor name</th>
-            <th> Doctor specialisation</th>
             <th> Patient isActive</th>
+            <th> Patient first name</th>
+            <th> Patient last name</th>
             <th> Patient age</th>
             <th> Patient eMail</th>
             <th> Patient phone number</th>
@@ -33,14 +35,14 @@
         <tr th:each="appointment : ${appointments}">
             <td class="appointmentId" th:text="${appointment.id}"> Id</td>
             <td th:text="${appointment.date}"> Date</td>
-            <td th:text="${appointment.doctor.name}"> Doctor name</td>
-            <td th:text="${appointment.doctor.specialisation.name}"> Doctor specialisation</td>
             <td>
                 <div class="form-check form-switch">
                     <input class="form-check-input" id="flexSwitchCheckDefault" type="checkbox"
                            th:checked="${appointment.patient.isActive}" name="isActive" onclick="return false">
                 </div>
             </td>
+            <td th:text="${appointment.patient.firstName}"> Patient first name</td>
+            <td th:text="${appointment.patient.lastName}"> Patient last name</td>
             <td th:text="${appointment.patient.age}"> Patient age</td>
             <td th:text="${appointment.patient.email}"> Patient eMail</td>
             <td th:text="${appointment.patient.phoneNumber}"> Patient phone number</td>
@@ -76,6 +78,7 @@
             }
         });
     });
+
 
 
 
