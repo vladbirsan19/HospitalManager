@@ -28,14 +28,18 @@ public class SpecialisationController {
 
     private final SpecialisationService specialisationService;
     private final DoctorService doctorService;
-//    private final AppointmentService appointmentService;
 
     @GetMapping("/viewAll")
     public String findAllSpecialisations(Model model, Authentication authentication) {
-        List<SpecialisationDto> specialisationList = specialisationService.findAll();
-        model.addAttribute("specialisations", specialisationList);
-        if (isAdmin(authentication)) return "admin/viewAllSpecialisations";
-        return "specialisation/viewAll";
+        if (isAdmin(authentication)) {
+            List<SpecialisationDto> specialisationList = specialisationService.findAll();
+            model.addAttribute("specialisations", specialisationList);
+            return "admin/viewAllSpecialisations";
+        } else {
+            List<SpecialisationDto> specialisationList = specialisationService.findAllActive();
+            model.addAttribute("specialisations", specialisationList);
+            return "specialisation/viewAll";
+        }
     }
 
     @GetMapping("/create")
@@ -51,7 +55,11 @@ public class SpecialisationController {
         if (bindingResult.hasErrors()) {
             return "specialisation/validationError";
         }
-        specialisationService.createSpecialisation(createSpecialisationDto);
+        try {
+            specialisationService.createSpecialisation(createSpecialisationDto);
+        } catch (ResponseStatusException exception) {
+            return "/entityExistsError";
+        }
         return "redirect:viewAll";
     }
 
@@ -63,16 +71,12 @@ public class SpecialisationController {
         return "doctor/viewSpecialisations";
     }
 
-    @PostMapping("/{Id}")
-    public String changeName(@PathVariable("Id") Integer id, @Valid @ModelAttribute("specialisation") CreateSpecialisationDto createSpecialisationDto, BindingResult bindingResult) {
+    @PutMapping("/{Id}")
+    public String updateSpecialisation(@PathVariable("Id") Integer id, @Valid @ModelAttribute("specialisation") CreateSpecialisationDto createSpecialisationDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "specialisation/validationError";
         }
-        try {
-            specialisationService.changeSpecialisationName(createSpecialisationDto, id);
-        } catch (ResponseStatusException exception) {
-            return "/entityExistsError";
-        }
+        specialisationService.updateSpecialisation(createSpecialisationDto, id);
         return "redirect:/specialisation/viewAll";
     }
 
@@ -80,8 +84,6 @@ public class SpecialisationController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteSpecialisationById(@PathVariable Integer id){
         specialisationService.deleteSpecialisationById(id);
-//        doctorService.deleteDoctorBySpecialisationId(id);
-//        appointmentService.deleteAppointmentByDoctorSpecialisationId(id);
     }
 
 }

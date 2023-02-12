@@ -14,6 +14,13 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
 
     Optional<Doctor> findByUserName(String name);
 
+    Optional<Doctor> findByIdAndIsActive(Integer id, boolean isActive);
+
     List<Doctor> findAllBySpecialisation(Specialisation specialisation);
+
+    List<Doctor> findAllBySpecialisationAndIsActive(Specialisation specialisation, boolean isActive);
+
+
+
 
 }

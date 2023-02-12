@@ -16,4 +16,6 @@ public class CreateSpecialisationDto {
     @NotEmpty(message = "Specialisation name can not be empty")
     private String name;
 
+    private Boolean isActive;
+
 }

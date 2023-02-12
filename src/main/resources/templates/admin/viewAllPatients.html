@@ -1,104 +1,126 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="UTF-8">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-  <title>Patient list</title>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <title>Patient list</title>
 </head>
 <body>
 <div class="w-100 mx-auto content-between-l">
-  <h2> Patients list</h2>
+    <h2> Patients list</h2>
 
-  <!--<table border="1" class="table table-striped">-->
+    <table class="table table-striped-columns w-100 align-middle" style="width: 100%">
+        <colgroup>
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 17%;">
+            <col span="1" style="width: 17%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 16%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 5%;">
+        </colgroup>
+        <thead>
+        <tr class="align-top">
+            <th> Id</th>
+            <th> First name</th>
+            <th> Last name</th>
+            <th> Birth Date</th>
+            <th> eMail</th>
+            <th> Phone Number</th>
+            <th> Hide Patient</th>
+            <th> Update Patient</th>
+            <th> Delete Patient</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${patients.empty}">
+            <td colspan="2"> No patients registered</td>
+        </tr>
+        <tr th:each="patient : ${patients}">
+            <td>
+                <form action="#" class="patientId" th:action="@{/appointment/findAllByPatientId/} + ${{patient.id}}"
+                      method="get">
+                    <button th:if="${patient.isActive}" class="btn btn-success" th:text="${patient.id}"
+                            th:value="${patient.id}"
+                            type="submit"></button>
+                    <button th:unless="${patient.isActive}" class="btn btn-light" th:text="${patient.id}"
+                            th:value="${patient.id}"
+                            type="submit"></button>
+                </form>
+            </td>
+            <form action="#" th:method="PUT" th:action="@{/mvc/patient/updatePatient/} + ${{patient.id}}" method="post">
+                <td>
+                    <div class="input-group">
+                        <input th:if="${patient.isActive}" type="text" class="form-control"
+                               th:value="${patient.firstName}" th:name="firstName"/>
+                        <input th:unless="${patient.isActive}" type="text" class="form-control"
+                               th:value="${patient.firstName}" th:name="firstName" readonly/>
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <input th:if="${patient.isActive}" type="text" class="form-control"
+                               th:value="${patient.lastName}" th:name="lastName"/>
+                        <input th:unless="${patient.isActive}" type="text" class="form-control"
+                               th:value="${patient.lastName}" th:name="lastName" readonly/>
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <input th:if="${patient.isActive}" type="text" class="form-control" th:value="${patient.age}"
+                               th:name="age"/>
+                        <input th:unless="${patient.isActive}" type="text" class="form-control"
+                               th:value="${patient.age}" th:name="age" readonly/>
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <input th:if="${patient.isActive}" type="email" class="form-control" th:value="${patient.email}"
+                               th:name="email"/>
+                        <input th:unless="${patient.isActive}" type="email" class="form-control"
+                               th:value="${patient.email}" th:name="email" readonly/>
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <input th:if="${patient.isActive}" type="text" class="form-control"
+                               th:value="${patient.phoneNumber}" th:name="phoneNumber"/>
+                        <input th:unless="${patient.isActive}" type="text" class="form-control"
+                               th:value="${patient.phoneNumber}" th:name="phoneNumber" readonly/>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" id="flexSwitchCheckDefault" type="checkbox"
+                               th:checked="${!patient.isActive}" name="isActive">
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group-append">
+                        <button th:if="${patient.isActive}" class="btn btn-outline-warning" type="submit">Update
+                        </button>
+                        <button th:unless="${patient.isActive}" class="btn btn-outline-dark" type="submit">Update
+                        </button>
+                    </div>
+                </td>
+            </form>
+            <td>
+                <button class="delete-patient-button"> Delete patient</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-  <table class="table table-striped-columns w-100" style="width: 100%">
-    <colgroup>
-      <col span="1" style="width: 10%;">
-      <col span="1" style="width: 17%;">
-      <col span="1" style="width: 17%;">
-      <col span="1" style="width: 10%;">
-      <col span="1" style="width: 16%;">
-      <col span="1" style="width: 10%;">
-      <col span="1" style="width: 10%;">
-      <col span="1" style="width: 10%;">
-    </colgroup>
-    <thead>
-    <tr>
-      <th> Id</th>
-      <th> First name</th>
-      <th> Last name</th>
-      <th> Birth Date</th>
-      <th> eMail</th>
-      <th> Phone Number</th>
-      <th> Update Patient</th>
-      <th> Hide Patient</th>
-      <th> Delete Patient</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:if="${patients.empty}">
-      <td colspan="2"> No patients registered</td>
-    </tr>
-    <tr th:each="patient : ${patients}">
-      <td>
-        <form action="#" class="patientId" th:action="@{/appointment/findAllByPatientId/} + ${{patient.id}}"
-              method="get">
-          <button class="btn btn-success" th:text="${patient.id}" th:value="${patient.id}"
-                  type="submit">
-            <i>details</i>
-          </button>
-        </form>
-      </td>
-      <form action="#" th:method="PUT" th:action="@{/mvc/patient/updatePatient/} + ${{patient.id}}" method="post">
-        <td>
-          <div class="input-group">
-            <input type="text" class="form-control" th:value="${patient.firstName}" th:name="firstName"/>
-          </div>
-        </td>
-        <td>
-          <div class="input-group">
-            <input type="text" class="form-control" th:value="${patient.lastName}" th:name="lastName"/>
-          </div>
-        </td>
-        <td>
-          <div class="input-group">
-            <input type="text" class="form-control" th:value="${patient.age}" th:name="age"/>
-          </div>
-        </td>
-        <td>
-          <div class="input-group">
-            <input type="text" class="form-control" th:value="${patient.email}" th:name="email"/>
-          </div>
-        </td>
-        <td>
-          <div class="input-group">
-            <input type="text" class="form-control" th:value="${patient.phoneNumber}" th:name="phoneNumber"/>
-          </div>
-        </td>
-        <td>
-          <div class="input-group-append">
-            <button class="btn btn-outline-warning" type="submit">Update</button>
-          </div>
-        </td>
-      </form>
-      <td>
-        <button class="hide-patient-button"> Hide toDo</button>
-      </td>
-      <td>
-        <button class="delete-patient-button"> Delete patient</button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+    <p></p>
 
-  <p></p>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+            crossorigin="anonymous"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-          crossorigin="anonymous"></script>
-
-  <script>
+    <script>
     const deleteButtons = document.querySelectorAll('.delete-patient-button');
     deleteButtons.forEach(function(deleteButton) {
         deleteButton.addEventListener("click", function() {
@@ -119,23 +141,22 @@
     });
 
 
-
     </script>
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-          crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+            crossorigin="anonymous"></script>
 
-  <button class="btn btn-secondary" onclick="window.location.href='/dashboard';">
-    Main Menu
-  </button>
-  <p></p>
-  <button class="btn btn-secondary" onclick="window.location.href='/logout';">
-    Sign out
-  </button>
+    <button class="btn btn-secondary" onclick="window.location.href='/dashboard';">
+        Main Menu
+    </button>
+    <p></p>
+    <button class="btn btn-secondary" onclick="window.location.href='/logout';">
+        Sign out
+    </button>
 </div>
 </body>
 </html>

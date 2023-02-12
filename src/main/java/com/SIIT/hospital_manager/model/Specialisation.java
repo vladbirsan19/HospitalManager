@@ -26,37 +26,10 @@ public class Specialisation {
     @Column(name="specialisation_name", unique=true)
     private String name;
 
+    private boolean isActive;
+
     @OneToMany(mappedBy = "specialisation", fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private List<Doctor> doctors;
-
-    public SpecialisationDto toDto() {
-
-        return SpecialisationDto.builder()
-                .id(id)
-                .name(name)
-                .build();
-    }
-
-//    ALLERGY_AND_IMMUNOLOGY("Allergy and immunology"),
-//    ANESTHESIOLOGY("Anesthesiology"),
-//    DERMATOLOGY("Dermatology"),
-//    DIAGNOSTIC_RADIOLOGY("Diagnostic radiology"),
-//    EMERGENCY_MEDICINE("Emergency medicine"),
-//    FAMILY_MEDICINE("Family medicine"),
-//    INTERNAL_MEDICINE("Internal medicine"),
-//    MEDICAL_GENETICS("Medical genetics"),
-//    NEUROLOGY("Neurology"),
-//    NUCLEAR_MEDICINE("Nuclear medicine"),
-//    OBSTETRICS_AND_GYNECOLOGY("Obstetrics and gynecology"),
-//    OPHTHALMOLOGY("Ophthalmology"),
-//    PATHOLOGY("Pathology"),
-//    PEDIATRICS("Pediatrics"),
-//    PHYSICAL_MEDICINE_AND_REHABILITATION("Physical medicine and rehabilitation"),
-//    PREVENTIVE_MEDICINE("Preventive medicine"),
-//    PSYCHIATRY("Psychiatry"),
-//    RADIATION_ONCOLOGY("Radiation oncology"),
-//    SURGERY("Surgery"),
-//    UROLOGY("Urology");
 
 }

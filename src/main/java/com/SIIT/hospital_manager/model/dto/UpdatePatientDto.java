@@ -40,4 +40,6 @@ public class UpdatePatientDto {
     @Pattern(regexp = "0\\d{9}")
     private String phoneNumber;
 
+    private Boolean isActive;
+
 }

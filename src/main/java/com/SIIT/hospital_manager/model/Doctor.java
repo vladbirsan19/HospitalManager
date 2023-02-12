@@ -34,13 +34,4 @@ public class Doctor extends User{
             cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     List<Appointment> appointments;
 
-    public DoctorDto toDto() {
-        return DoctorDto
-                .builder()
-                .name(name)
-                .id(getId())
-                .specialisation(specialisation)
-                .build();
-    }
-
 }
