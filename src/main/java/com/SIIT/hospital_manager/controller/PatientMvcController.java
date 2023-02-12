@@ -3,6 +3,7 @@ package com.siit.hospital_manager.controller;
 
 import com.siit.hospital_manager.model.dto.CreatePatientDto;
 import com.siit.hospital_manager.model.dto.PatientDto;
+import com.siit.hospital_manager.model.dto.UpdatePatientDto;
 import com.siit.hospital_manager.service.PatientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,11 +29,15 @@ public class PatientMvcController {
     private final PatientService patientService;
     @GetMapping("viewAll")
     public String getAllPatients(Model model, Authentication authentication) {
-        List<PatientDto> patientsList = patientService.findAll();
-        model.addAttribute("patients", patientsList);
         if (isAdmin(authentication)) {
+            List<PatientDto> patientsList = patientService.findAll();
+            model.addAttribute("patients", patientsList);
             return "admin/viewAllPatients";
-        } else return "patient/viewAll";
+        } else {
+            List<PatientDto> activePatientsList = patientService.findAllActive();
+            model.addAttribute("patients", activePatientsList);
+            return "patient/viewAll";
+        }
     }
 
     @GetMapping("/create")
@@ -59,7 +64,7 @@ public class PatientMvcController {
     }
 
     @PutMapping(value = "/updatePatient/{Id}")
-    public String updatePatient(@PathVariable("Id") Integer id, @Valid @ModelAttribute("patient") com.siit.hospital_manager.model.dto.UpdatePatientDto updatePatientDto, BindingResult bindingResult) {
+    public String updatePatient(@PathVariable("Id") Integer id, @Valid UpdatePatientDto updatePatientDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "patient/validationError";
         }

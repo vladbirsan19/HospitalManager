@@ -2,10 +2,8 @@ package com.siit.hospital_manager.controller;
 
 
 import com.siit.hospital_manager.model.dto.*;
-import com.siit.hospital_manager.service.AppointmentService;
 import com.siit.hospital_manager.service.DoctorService;
 import com.siit.hospital_manager.service.SpecialisationService;
-import com.siit.hospital_manager.util.AuthUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
@@ -32,7 +30,6 @@ public class DoctorController {
 
     private final DoctorService doctorService;
     private final SpecialisationService specialisationService;
-//    private final AppointmentService appointmentService;
 
     @GetMapping("/viewAll")
     public String viewAll(Model model, Authentication authentication){
@@ -51,25 +48,34 @@ public class DoctorController {
     @GetMapping("/viewDoctorsBySpecialisation/{specialisationId}")
     public String viewDoctorsBySpecialisation(Model model, @PathVariable("specialisationId") Integer specialisationId, Authentication authentication) {
         List<DoctorDto> doctorsList = doctorService.findAllBySpecialisation(specialisationService.findSpecialisationById(specialisationId));
-        model.addAttribute("doctors", doctorsList);
-        if (doctorsList.isEmpty() && isAdmin(authentication)) return "redirect:/mvc/doctor/createDoctor/{specialisationId}";
-        else if (isAdmin(authentication)) return "admin/viewDoctorsBySpecialisation";
+        if (doctorsList.isEmpty() && isAdmin(authentication)) {
+            return "redirect:/mvc/doctor/createDoctor/{specialisationId}";
+        }
+        else if (isAdmin(authentication)) {
+            model.addAttribute("doctors", doctorsList);
+            return "admin/viewDoctorsBySpecialisation";
+        }
         else {
+            List<DoctorDto> activeDoctorsList = doctorService.findAllActiveDoctorsBySpecialisation(specialisationService.findSpecialisationById(specialisationId));
+            model.addAttribute("doctors", activeDoctorsList);
             return "doctor/viewDoctorsBySpecialisation";
         }
     }
 
     @GetMapping("/viewDoctorProfile/{id}")
     public String viewDoctorProfile(Model model, @PathVariable("id") Integer id, Authentication authentication) {
-        DoctorDto doctor = doctorService.findById(id);
-        model.addAttribute("doctor", doctor);
-        if (isPatient(authentication)) return "patient/viewDoctorProfile";
-        else if (isAdmin(authentication)) {
+        if (isAdmin(authentication)) {
+            DoctorDto doctorDto = doctorService.findById(id);
+            model.addAttribute("doctor", doctorDto);
             List<SpecialisationDto> specialisationList = specialisationService.findAll();
             model.addAttribute("specialisations", specialisationList);
             return "admin/viewDoctorProfile";
+        } else {
+            DoctorDto doctor = doctorService.findActiveById(id);
+            model.addAttribute("doctor", doctor);
+            if (isPatient(authentication)) return "patient/viewDoctorProfile";
+            else return "doctor/viewDoctorProfile";
         }
-        else return "doctor/viewDoctorProfile";
     }
 
     @GetMapping("/createDoctor/{specialisationId}")
@@ -98,39 +104,21 @@ public class DoctorController {
         return "doctor/successDoctorCreation";
     }
 
-    @PostMapping(value = "/changeName/{Id}")
-    public String changeName(@PathVariable("Id") Integer id, @Valid @ModelAttribute("doctor") UpdateDoctorDto updateDoctorDto, BindingResult bindingResult) {
+    @PutMapping(value = "/updateDoctor/{Id}")
+    public String updateDoctor(@PathVariable("Id") Integer id, @Valid UpdateDoctorDto updateDoctorDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "doctor/validationError";
         }
-        doctorService.changeName(updateDoctorDto, id);
+        doctorService.updateDoctor(id, updateDoctorDto);
         return "redirect:/mvc/doctor/viewAll";
     }
 
-    @PostMapping(value = "/changeSpecialisation/{Id}")
-    public String changeSpecialisation(@PathVariable("Id") Integer id, @Valid @ModelAttribute("doctor") CreateSpecialisationDto createSpecialisationDto, BindingResult bindingResult) {
+    @PutMapping(value = "/docProfile/updateDoctor/{Id}")
+    public String changeNameDocProfile(@PathVariable("Id") Integer id, @Valid UpdateDoctorDto updateDoctorDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "doctor/validationError";
         }
-        doctorService.changeSpecialisationName(createSpecialisationDto, id);
-        return "redirect:/mvc/doctor/viewAll";
-    }
-
-    @PostMapping(value = "/docProfile/changeName/{Id}")
-    public String changeNameDocProfile(@PathVariable("Id") Integer id, @Valid @ModelAttribute("doctor") UpdateDoctorDto updateDoctorDto, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "doctor/validationError";
-        }
-        doctorService.changeName(updateDoctorDto, id);
-        return "redirect:/mvc/doctor/viewDoctorProfile/{Id}";
-    }
-
-    @PostMapping(value = "/docProfile/changeSpecialisation/{Id}")
-    public String changeSpecialisationDocProfile(@PathVariable("Id") Integer id, @Valid @ModelAttribute("doctor") CreateSpecialisationDto createSpecialisationDto, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "doctor/validationError";
-        }
-        doctorService.changeSpecialisationName(createSpecialisationDto, id);
+        doctorService.updateDoctor(id, updateDoctorDto);
         return "redirect:/mvc/doctor/viewDoctorProfile/{Id}";
     }
 
@@ -138,6 +126,5 @@ public class DoctorController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteDoctorById(@PathVariable Integer id){
         doctorService.deleteDoctorById(id);
-//        appointmentService.deleteAppointmentByDoctorId(id);
     }
 }
