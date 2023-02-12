@@ -3,6 +3,7 @@ package com.siit.hospital_manager.controller;
 import com.siit.hospital_manager.model.dto.AppointmentDto;
 import com.siit.hospital_manager.model.dto.CreateAppointmentDto;
 import com.siit.hospital_manager.service.AppointmentService;
+import com.siit.hospital_manager.service.EmailSender;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,7 @@ import static com.siit.hospital_manager.util.AuthUtils.isDoctor;
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
+    private final EmailSender emailSender;
 
     @GetMapping("/findAllByUserName")
     public String findAllByUserName(Model model, Principal principal, Authentication authentication) {
@@ -50,7 +52,8 @@ public class AppointmentController {
         if (isAdmin(authentication)) {
             List<AppointmentDto> appointmentsList = appointmentService.findAllByPatientId(id);
             model.addAttribute("appointments", appointmentsList);
-            return "admin/viewPatientAppointments";}
+            return "admin/viewPatientAppointments";
+        }
         return "index";
     }
 
@@ -59,7 +62,8 @@ public class AppointmentController {
         if (isAdmin(authentication)) {
             List<AppointmentDto> appointmentsList = appointmentService.findAllByDoctorId(id);
             model.addAttribute("appointments", appointmentsList);
-            return "admin/viewDoctorAppointments";}
+            return "admin/viewDoctorAppointments";
+        }
         return "index";
     }
 
@@ -89,8 +93,11 @@ public class AppointmentController {
         appointmentService.addPatientToCreateAppointmentDto(createAppointmentDto, principal.getName());
         try {
             appointmentService.createAppointment(createAppointmentDto);
-        }
-        catch (ResponseStatusException exception){
+            String to = createAppointmentDto.getPatient().getEmail();
+            String subject = "Appointment Confirmation";
+            String body = "Your appointment has been confirmed. We are waiting for you on;" + createAppointmentDto.getDate();
+            emailSender.sendAppointmentConfirmationEmail(to, subject, body);
+        } catch (ResponseStatusException exception) {
             return "/entityExistsError";
         }
         return "redirect:/appointment/findAllByUserName";
