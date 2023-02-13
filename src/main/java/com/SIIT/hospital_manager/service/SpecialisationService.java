@@ -1,8 +1,6 @@
 package com.siit.hospital_manager.service;
 
 
-;
-
 import com.siit.hospital_manager.exception.BusinessException;
 import com.siit.hospital_manager.model.Specialisation;
 import com.siit.hospital_manager.model.dto.CreateSpecialisationDto;
@@ -59,6 +57,10 @@ public class SpecialisationService {
         Specialisation specialisation = specialisationRepository
                 .findById(id)
                 .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "Specialisation with Id " + id + " not found"));
+        specialisationRepository
+                .findByName(createSpecialisationDto.getName())
+                .ifPresent(s -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Specialisation with the name " + createSpecialisationDto.getName() + " is already present");
+                });
         if (createSpecialisationDto.getName() != null) {
             specialisation.setName(createSpecialisationDto.getName());
         }

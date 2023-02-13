@@ -69,52 +69,103 @@
     </style>
 </head>
 <body>
-<div class="bg" style="background-image: url('https://img.freepik.com/free-vector/clean-medical-patterned-background_53876-116871.jpg?w=1060&t=st=1675603541~exp=1675604141~hmac=1f4d78c785076cdd8f58c313549b326ea071ed745e8bf0bba675660bef62cebd');  background-size: cover; background-position: center center; height: 100vh; width: 100%;">
+<div class="bg"
+     style="background-image: url('https://img.freepik.com/free-vector/clean-medical-patterned-background_53876-116871.jpg?w=1060&t=st=1675603541~exp=1675604141~hmac=1f4d78c785076cdd8f58c313549b326ea071ed745e8bf0bba675660bef62cebd');  background-size: cover; background-position: center center; height: 100vh; width: 100%;">
     <div class="container h-100 d-flex justify-content-center align-items-center">
-        <div class="w-50 mx-auto content-between-l">
+        <div class="w-75 mx-auto content-between-l">
+            <h2>Become our patient, create your patient account</h2>
             <br/>
-            <h2>Become our patient,  create your patient account</h2>
-            <div>
-                <form th:object="${createPatientDto}" th:action="@{/mvc/patient/submitCreatePatientForm}" method="post">
-                    <div class="mb-0 w-75 p-3">
-                        <label class="form-label" for="userName">User Name:</label>
-                        <input class="form-control" type="text" id="userName" th:field="*{userName}"/>
+            <div class="container">
+                <form th:object="${createPatientDto}" th:action="@{/mvc/patient/submitCreatePatientForm}" method="post"
+                      novalidate>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label text-success" for="userName">UserName:</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" type="text" id="userName" th:field="*{userName}"/>
+                        </div>
+                        <div class="col-sm-6">
+                            <small class="text-danger" th:if="${#fields.hasErrors('userName')}" th:errorclass="error"
+                                   th:errors="*{userName}">
+                            </small>
+                        </div>
                     </div>
-                    <div class="mb-0 w-75 p-3">
-                        <label class="form-label" for="userName">Password:</label>
-                        <input class="form-control" type="password" id="password" th:field="*{password}"/>
+                    <p></p>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label text-success" for="password">Password:</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" type="password" id="password" th:field="*{password}"/>
+                        </div>
+                        <div class="col-sm-6">
+                            <small class="text-danger" th:if="${#fields.hasErrors('password')}" th:errorclass="error"
+                                   th:errors="*{password}">
+                            </small>
+                        </div>
                     </div>
-                    <div class="mb-0 w-75 p-3">
-                        <i class="fa-solid fa-hospital-user"></i>
-                        <label class="form-label" style="text-align: center" for="firstName">First Name:</label>
-                        <input class="form-control" type="text" id="firstName" th:field="*{firstName}"/>
+                    <p></p>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label text-success" for="firstName">First Name:</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" type="text" id="firstName" th:field="*{firstName}"/>
+                        </div>
+                        <div class="col-sm-6">
+                            <small class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errorclass="error"
+                                   th:errors="*{firstName}">
+                            </small>
+                        </div>
                     </div>
-                    <div class="mb-0 w-75 p-3">
-                        <i class="fa-solid fa-hospital-user"></i>
-                        <label class="form-label" style="text-align: center" for="lastName">Last Name:</label>
-                        <input class="form-control" type="text" id="lastName" th:field="*{lastName}"/>
+                    <p></p>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label text-success" for="lastName">Last Name:</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" type="text" id="lastName" th:field="*{lastName}"/>
+                        </div>
+                        <div class="col-sm-6">
+                            <small class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errorclass="error"
+                                   th:errors="*{lastName}">
+                            </small>
+                        </div>
                     </div>
-                    <div class="mb-0 w-75 p-3">
-                        <label class="form-label" for="age">Age:</label>
-                        <input class="form-control" type="number" id="age" th:field="*{age}"/>
+                    <p></p>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label text-success" for="age">Age:</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" type="text" id="age" th:field="*{age}"/>
+                        </div>
+                        <div class="col-sm-6">
+                            <small class="text-danger" th:if="${#fields.hasErrors('age')}" th:errorclass="error"
+                                   th:errors="*{age}">
+                            </small>
+                        </div>
                     </div>
-                    <div class="mb-0 w-75 p-1">
-                        <label class="form-label" for="phoneNumber">Phone number:</label>
-                        <input class="form-control" type="text" id="phoneNumber" th:field="*{phoneNumber}"/>
+                    <p></p>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label text-success" for="phoneNumber">Phone Number:</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" type="text" id="phoneNumber" th:field="*{phoneNumber}"/>
+                        </div>
+                        <div class="col-sm-6">
+                            <small class="text-danger" th:if="${#fields.hasErrors('phoneNumber')}" th:errorclass="error"
+                                   th:errors="*{phoneNumber}">
+                            </small>
+                        </div>
                     </div>
-                    <div class="mb-0 w-75 p-3">
-                        <i class="fa-solid fa-hospital-user"></i>
-                        <label class="form-label" style="text-align: center" for="email">email:</label>
-                        <input class="form-control" type="text" id="email" th:field="*{email}"/>
+                    <p></p>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label text-success" for="email">Email:</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" type="email" id="email" th:field="*{email}"/>
+                        </div>
+                        <div class="col-sm-6">
+                            <small class="text-danger" th:if="${#fields.hasErrors('email')}" th:errorclass="error"
+                                   th:errors="*{email}">
+                            </small>
+                        </div>
                     </div>
-                    <div class="w-75 p-3 text-end">
-                        <input type="submit" value="Submit" class="btn btn-primary "/>
+                    <p></p>
+                    <div class="w-50 p-3 text-end">
+                        <input type="reset" value="Reset" class="btn btn-danger"/>
+                        <input type="submit" value="Submit" class="btn btn-success"/>
                         <br>
-                    </div>
-                    <div th:if="${#fields.hasAnyErrors()}">
-                        <ul>
-                            <li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
-                        </ul>
                     </div>
                 </form>
             </div>
@@ -132,6 +183,7 @@
             Sign out
         </button>
 
-    </div></div>
+    </div>
+</div>
 </body>
 </html>
