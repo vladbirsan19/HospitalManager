@@ -1,5 +1,8 @@
 package com.siit.hospital_manager.model;
 
+
+import com.siit.hospital_manager.model.dto.CreateDoctorDto;
+import com.siit.hospital_manager.model.dto.DoctorDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -30,5 +33,14 @@ public class Doctor extends User{
     @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     List<Appointment> appointments;
+
+    public DoctorDto toDto() {
+        return DoctorDto
+                .builder()
+                .name(name)
+                .id(getId())
+                .specialisation(specialisation)
+                .build();
+    }
 
 }

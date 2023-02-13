@@ -1,12 +1,12 @@
 package com.siit.hospital_manager.service;
 
 import com.siit.hospital_manager.exception.BusinessException;
+import com.siit.hospital_manager.repository.PatientRepository;
+import com.siit.hospital_manager.repository.UserRepository;
 import com.siit.hospital_manager.model.Patient;
 import com.siit.hospital_manager.model.dto.CreatePatientDto;
 import com.siit.hospital_manager.model.dto.PatientDto;
 import com.siit.hospital_manager.model.dto.UpdatePatientDto;
-import com.siit.hospital_manager.repository.PatientRepository;
-import com.siit.hospital_manager.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

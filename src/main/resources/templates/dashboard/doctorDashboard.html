@@ -23,7 +23,10 @@
   </button>
 
   <p></p>
-
+  <button class="btn btn-primary" onclick="window.location.href='/appointment/doctorAppointmentHistory';">
+    Appointments History
+  </button>
+  <p></p>
   <form action="#" th:action="@{/mvc/doctor/viewDoctorProfile/} + ${{doctor.id}}" method="get">
     <button class="btn btn-success"
             type="submit">

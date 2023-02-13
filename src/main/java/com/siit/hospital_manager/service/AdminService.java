@@ -1,10 +1,10 @@
 package com.siit.hospital_manager.service;
 
 import com.siit.hospital_manager.exception.BusinessException;
-import com.siit.hospital_manager.model.Admin;
-import com.siit.hospital_manager.model.User;
 import com.siit.hospital_manager.repository.DoctorRepository;
 import com.siit.hospital_manager.repository.UserRepository;
+import com.siit.hospital_manager.model.Admin;
+import com.siit.hospital_manager.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;

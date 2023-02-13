@@ -1,5 +1,7 @@
 package com.siit.hospital_manager.service;
 
+import com.siit.hospital_manager.model.dto.UpdateAppointmentDto;
+import com.siit.hospital_manager.repository.PatientRepository;
 import com.siit.hospital_manager.exception.BusinessException;
 import com.siit.hospital_manager.model.*;
 import com.siit.hospital_manager.model.dto.AppointmentDto;
@@ -25,16 +27,16 @@ public class AppointmentService {
     private final SpecialisationsRepository specialisationsRepository;
     private final AppointmentRepository appointmentRepository;
 
-    public List<AppointmentDto> findAllByPatientId(Integer id) {
-        List<Appointment> appointments = appointmentRepository.findAllByPatientId(id);
+    public List<AppointmentDto> findAllByPatientId(Integer id, AppointmentStatus appointmentStatus) {
+        List<Appointment> appointments = appointmentRepository.findAllByPatientIdAndAppointmentStatus(id, appointmentStatus);
         return appointments
                 .stream()
                 .map(Appointment::toDto)
                 .toList();
     }
 
-    public List<AppointmentDto> findAllByDoctorId(Integer id) {
-        List<Appointment> appointments = appointmentRepository.findAllByDoctorId(id);
+    public List<AppointmentDto> findAllByDoctorId(Integer id, AppointmentStatus appointmentStatus) {
+        List<Appointment> appointments = appointmentRepository.findAllByDoctorIdAndAppointmentStatus(id, appointmentStatus);
         return appointments
                 .stream()
                 .map(Appointment::toDto)
@@ -48,23 +50,23 @@ public class AppointmentService {
                 .toList();
     }
 
-    public List<AppointmentDto> findAllByPatientUserNameAndActiveDoctor(String userName) {
+    public List<AppointmentDto> findAllByPatientUserNameAndActiveDoctorAndAppointmentStatus(String userName, AppointmentStatus appointmentStatus) {
         User patient = userRepository.findByUserName(userName).orElseThrow(
                 () -> new BusinessException(HttpStatus.NOT_FOUND, "User not found")
         );
 
-        List<Appointment> appointments = appointmentRepository.findAllByPatientIdAndDoctorIsActive(patient.getId(), true);
+        List<Appointment> appointments = appointmentRepository.findAllByPatientIdAndDoctorIsActiveAndAppointmentStatus(patient.getId(), true, appointmentStatus);
         return appointments.stream()
                 .map(Appointment::toDto)
                 .toList();
     }
 
-    public List<AppointmentDto> findAllByDoctorUserName(String userName) {
+    public List<AppointmentDto> findAllByDoctorUserName(String userName, AppointmentStatus appointmentStatus) {
         User doctor = userRepository.findByUserName(userName).orElseThrow(
                 () -> new BusinessException(HttpStatus.NOT_FOUND, "User not found")
         );
 
-        List<Appointment> appointments = appointmentRepository.findAllByDoctorIdAndPatientIsActive(doctor.getId(), true);
+        List<Appointment> appointments = appointmentRepository.findAllByDoctorIdAndPatientIsActiveAndAppointmentStatus(doctor.getId(), true, appointmentStatus);
         return appointments.stream()
                 .map(Appointment::toDto)
                 .toList();
@@ -110,6 +112,7 @@ public class AppointmentService {
                 .patient(createAppointmentDto.getPatient())
                 .doctor(createAppointmentDto.getDoctor())
                 .date(createAppointmentDto.getDate())
+                .appointmentStatus(AppointmentStatus.CONFIRMED)
                 .build();
         return appointmentRepository.save(appointment).getId();
     }
@@ -128,4 +131,50 @@ public class AppointmentService {
         return createAppointmentDto;
     }
 
+    public Appointment findAppointmentById(Integer id) {
+        Appointment appointment = appointmentRepository.findAppointmentById(id);
+        return appointment;
+    }
+    public void updateAppointment(UpdateAppointmentDto updateAppointmentDto) {
+        Appointment appointment = appointmentRepository
+                .findById(updateAppointmentDto.getId())
+                .orElseThrow(() -> new BusinessException(HttpStatus.BAD_REQUEST, "Appointment with id " + updateAppointmentDto.getId() + " not found"));
+
+        if(updateAppointmentDto.getNote() != null) {
+            appointment.setNote(updateAppointmentDto.getNote());
+        }
+
+        if(updateAppointmentDto.getDiagnostic() != null) {
+            appointment.setDiagnostic(updateAppointmentDto.getDiagnostic());
+        }
+        if(updateAppointmentDto.getTreatment() != null) {
+            appointment.setTreatment(updateAppointmentDto.getTreatment());
+        }
+        appointment.setAppointmentStatus(AppointmentStatus.COMPLETED);
+
+        appointmentRepository.save(appointment);
+    }
+    public List<AppointmentDto> findAllByDoctorAndStatus(String doctorName, AppointmentStatus appointmentStatus) {
+        Doctor doctor = doctorRepository.findByName(doctorName).orElseThrow(
+                () -> new BusinessException(HttpStatus.NOT_FOUND, "Doctor not found")
+        );
+
+        List<Appointment> appointments = appointmentRepository.findAllByDoctorAndAppointmentStatus(doctor, appointmentStatus);
+
+        return appointments.stream()
+                .map(Appointment::toDto)
+                .toList();
+
+    }
+    public List<AppointmentDto> findAllByUserName(String userName, AppointmentStatus appointmentStatus) {
+        User patient = userRepository.findByUserName(userName).orElseThrow(
+                () -> new BusinessException(HttpStatus.NOT_FOUND, "User not found")
+        );
+
+        List<Appointment> appointments = appointmentRepository.findAllByPatientIdAndAppointmentStatus(patient.getId(), appointmentStatus);
+        return appointments.stream()
+                .map(Appointment::toDto)
+                .toList();
+
+    }
 }

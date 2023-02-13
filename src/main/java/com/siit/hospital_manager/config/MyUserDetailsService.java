@@ -1,6 +1,5 @@
 package com.siit.hospital_manager.config;
 
-
 import com.siit.hospital_manager.model.User;
 
 import com.siit.hospital_manager.repository.UserRepository;

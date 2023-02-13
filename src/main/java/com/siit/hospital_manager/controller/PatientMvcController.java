@@ -64,7 +64,7 @@ public class PatientMvcController {
     }
 
     @PutMapping(value = "/updatePatient/{Id}")
-    public String updatePatient(@PathVariable("Id") Integer id, @Valid UpdatePatientDto updatePatientDto, BindingResult bindingResult) {
+    public String updatePatient(@PathVariable("Id") Integer id, @Valid @ModelAttribute("patient") UpdatePatientDto updatePatientDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "patient/validationError";
         }

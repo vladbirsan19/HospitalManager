@@ -1,7 +1,10 @@
 package com.siit.hospital_manager.model.dto;
 
+import com.siit.hospital_manager.model.AppointmentStatus;
 import com.siit.hospital_manager.model.Doctor;
 import com.siit.hospital_manager.model.Patient;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -25,4 +28,6 @@ public class CreateAppointmentDto {
     private Patient patient;
 
     private Doctor doctor;
+    @Enumerated(EnumType.STRING)
+    private AppointmentStatus appointmentStatus;
 }

@@ -2,10 +2,10 @@ package com.siit.hospital_manager.service;
 
 
 import com.siit.hospital_manager.exception.BusinessException;
+import com.siit.hospital_manager.repository.SpecialisationsRepository;
 import com.siit.hospital_manager.model.Specialisation;
 import com.siit.hospital_manager.model.dto.CreateSpecialisationDto;
 import com.siit.hospital_manager.model.dto.SpecialisationDto;
-import com.siit.hospital_manager.repository.SpecialisationsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

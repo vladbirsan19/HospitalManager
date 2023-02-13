@@ -20,9 +20,12 @@
             <th> Doctor name</th>
             <th> Doctor specialisation</th>
             <th> Patient isActive</th>
+            <th> Patient first name</th>
+            <th> Patient last name</th>
             <th> Patient age</th>
             <th> Patient eMail</th>
             <th> Patient phone number</th>
+            <th> Appointment Status</th>
             <th> Delete</th>
         </tr>
         </thead>
@@ -35,6 +38,8 @@
             <td th:text="${appointment.date}"> Date</td>
             <td th:text="${appointment.doctor.name}"> Doctor name</td>
             <td th:text="${appointment.doctor.specialisation.name}"> Doctor specialisation</td>
+            <td th:text="${appointment.patient.firstName}"> Patient first name</td>
+            <td th:text="${appointment.patient.lastName}"> Patient last name</td>
             <td>
                 <div class="form-check form-switch">
                     <input class="form-check-input" id="flexSwitchCheckDefault" type="checkbox"
@@ -44,6 +49,7 @@
             <td th:text="${appointment.patient.age}"> Patient age</td>
             <td th:text="${appointment.patient.email}"> Patient eMail</td>
             <td th:text="${appointment.patient.phoneNumber}"> Patient phone number</td>
+            <td th:text="${appointment.appointmentStatus}"> Appointment Status</td>
             <td>
                 <button class="delete-appointment-button"> Delete appointment</button>
             </td>
