@@ -32,6 +32,12 @@ public class PatientService {
                 .map(PatientDto::new).toList();
     }
 
+    public List<PatientDto> findAllActive() {
+        return patientRepository.findAllByIsActive(true)
+                .stream()
+                .map(PatientDto::new).toList();
+    }
+
     public PatientDto findById(Integer id) {
         Patient patient = patientRepository
                 .findById(id)
@@ -80,6 +86,9 @@ public class PatientService {
         if (updatePatientDto.getPhoneNumber() != null) {
             patient.setPhoneNumber(updatePatientDto.getPhoneNumber());
         }
+        if (updatePatientDto.getIsActive() == null) {
+            patient.setActive(true);
+        } else patient.setActive(!updatePatientDto.getIsActive());
         patientRepository.save(patient);
         return patient;
     }

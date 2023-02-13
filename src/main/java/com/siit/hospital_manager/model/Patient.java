@@ -14,6 +14,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @PrimaryKeyJoinColumn(referencedColumnName = "user_id")
 public class Patient extends User {
+    public String getEmail() {
+        return email;
+    }
+
     private String firstName;
     private String lastName;
     private String email;

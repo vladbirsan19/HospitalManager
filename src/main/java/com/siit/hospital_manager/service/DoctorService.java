@@ -7,7 +7,6 @@ import com.siit.hospital_manager.repository.UserRepository;
 import com.siit.hospital_manager.model.Doctor;
 import com.siit.hospital_manager.model.Specialisation;
 import com.siit.hospital_manager.model.dto.CreateDoctorDto;
-import com.siit.hospital_manager.model.dto.CreateSpecialisationDto;
 import com.siit.hospital_manager.model.dto.DoctorDto;
 import com.siit.hospital_manager.model.dto.UpdateDoctorDto;
 import jakarta.transaction.Transactional;
@@ -28,7 +27,6 @@ public class DoctorService {
     private final PasswordEncoder passwordEncoder;
     private final SpecialisationsRepository specialisationRepository;
 
-
     public List<DoctorDto> findAll() {
         return doctorRepository
                 .findAll()
@@ -40,6 +38,13 @@ public class DoctorService {
     public DoctorDto findById(Integer id) {
         Doctor doctor = doctorRepository
                 .findById(id)
+                .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "Doctor with id " + id + " not found"));
+        return new DoctorDto(doctor);
+    }
+
+    public DoctorDto findActiveById(Integer id) {
+        Doctor doctor = doctorRepository
+                .findByIdAndIsActive(id, true)
                 .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "Doctor with id " + id + " not found"));
         return new DoctorDto(doctor);
     }
@@ -56,6 +61,13 @@ public class DoctorService {
                 .stream()
                 .map(DoctorDto::new).toList();
     }
+
+    public List<DoctorDto> findAllActiveDoctorsBySpecialisation(Specialisation specialisation) {
+        return doctorRepository.findAllBySpecialisationAndIsActive(specialisation, true)
+                .stream()
+                .map(DoctorDto::new).toList();
+    }
+
 
     @Transactional
     public Integer createDoctor(CreateDoctorDto createDoctorDto) {
@@ -77,16 +89,16 @@ public class DoctorService {
         return userRepository.save(doctor).getId();
     }
 
-    public void deleteDoctorById(Integer id) {
-        Doctor doctor = doctorRepository.findById(id).orElseThrow(
-                () -> new BusinessException(HttpStatus.NOT_FOUND, "Invalid doctor id"));
-        doctorRepository.delete(doctor);
-    }
-
     public List<Specialisation> findAllSpecialisations() {
         return doctorRepository.findAll()
                 .stream()
                 .map(Doctor::getSpecialisation).toList();
+    }
+
+    public void deleteDoctorById(Integer id) {
+        Doctor doctor = doctorRepository.findById(id).orElseThrow(
+                () -> new BusinessException(HttpStatus.NOT_FOUND, "Invalid doctor id"));
+        doctorRepository.delete(doctor);
     }
 
     public CreateDoctorDto addSpecialisationToCreateDoctorDto(CreateDoctorDto createDoctorDto, Integer specialisationId) {
@@ -97,38 +109,24 @@ public class DoctorService {
         return createDoctorDto;
     }
 
-    public Doctor changeName(UpdateDoctorDto updateDoctorDto, Integer id) {
-        Doctor doctor = doctorRepository
-                .findById(id)
-                .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "Doctor with Id " + id + " not found"));
-        if (updateDoctorDto.getName() != null) {
-            doctor.setName(updateDoctorDto.getName());
-        }
-        doctorRepository.save(doctor);
-        return doctor;
-    }
-
-    public Doctor changeSpecialisationName(CreateSpecialisationDto createSpecialisationDto, Integer id) {
+    public Doctor updateDoctor(Integer id, UpdateDoctorDto updateDoctorDto) {
         Doctor doctor = doctorRepository
                 .findById(id)
                 .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "Doctor with Id " + id + " not found"));
         Specialisation specialisation = specialisationRepository
-                .findByName(createSpecialisationDto.getName())
-                .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "Specialisation with name " + createSpecialisationDto.getName() + " not found"));
-        if (createSpecialisationDto.getName() != null) {
+                .findByName(updateDoctorDto.getSpecialisation().getName())
+                .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "Specialisation with name " + updateDoctorDto.getSpecialisation().getName() + " not found"));
+        if (updateDoctorDto.getName() != null) {
+            doctor.setName(updateDoctorDto.getName());
+        }
+        if (updateDoctorDto.getSpecialisation().getName() != null) {
             doctor.setSpecialisation(specialisation);
         }
+        if (updateDoctorDto.getIsActive() == null) {
+            doctor.setActive(true);
+        } else doctor.setActive(!updateDoctorDto.getIsActive());
         doctorRepository.save(doctor);
         return doctor;
     }
-
-//    public void deleteDoctorBySpecialisationId(Integer id) {
-//        Specialisation specialisation = specialisationRepository
-//                .findById(id)
-//                .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "Specialisation with Id " + id + " not found"));
-//        doctorRepository
-//                .findAllBySpecialisation(specialisation)
-//                .forEach(doctorRepository::delete);
-//    }
 
 }

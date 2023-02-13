@@ -21,10 +21,10 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests()
                 .requestMatchers("/", "/public", "/api-docs/**", "/swagger-ui/**", "/actuator/**", "/error/**", "/favicon.ico", "/mvc/patient/create", "/mvc/patient/submitCreatePatientForm").permitAll()
-                .requestMatchers("/dashboard/**", "/dashboard", "/appointment/findAllByUserName", "/mvc/doctor/viewDoctorSpecialisations", "/appointment/{id}", "/mvc/doctor/viewAll", "/mvc/patient/viewAll",
-                        "/specialisation/viewAll", "/mvc/doctor/viewDoctorsBySpecialisationForPatient/{specialisation}", "/specialisation/viewAllForPatient", "/validationError.html", "/entityExistsError.html",
-                        "/mvc/doctor/viewDoctorsBySpecialisation/**", "/mvc/doctor/viewDoctorProfile/**", "/appointment/create/**", "/appointment/submit/**", "/appointment/**").hasAnyRole("PATIENT", "DOCTOR", "ADMIN")
                 .requestMatchers("/**", "/error/**").hasRole("ADMIN")
+                        "/specialisation/viewAll", "/mvc/doctor/viewDoctorsBySpecialisationForPatient/{specialisation}", "/specialisation/viewAllForPatient", "/entityExistsError.html",
+                        "/mvc/doctor/viewDoctorsBySpecialisation/**", "/mvc/doctor/viewDoctorProfile/**", "/appointment/create/**", "/appointment/submit/**", "/appointment/**").hasAnyRole("PATIENT", "DOCTOR", "ADMIN")
+                .requestMatchers("/**").hasRole("ADMIN")
                 .and()
                 .logout()
                 .logoutSuccessUrl("/")

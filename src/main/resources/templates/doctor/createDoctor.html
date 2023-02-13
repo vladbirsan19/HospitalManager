@@ -12,19 +12,22 @@
   <br/>
   <h2>Create doctor</h2>
   <div>
-    <form th:object="${doctorDto}" th:action="@{/mvc/doctor/submitCreateDoctorForm/} + *{{specialisation.id}}"
+    <form action="#" th:object="${createDoctorDto}" th:action="@{/mvc/doctor/submitCreateDoctorForm/} + *{{specialisation.id}}"
           method="post">
       <div class="mb-0 w-75 p-1">
-        <label class="form-label" for="userName">UserName:</label>
-        <input class="form-control" type="text" id="userName" th:field="*{userName}"/>
+        <label class="form-label" for="user_Name">UserName:</label>
+        <input class="form-control" type="text" id="user_Name" th:field="*{userName}"/>
+        <p class="alert alert-danger" th:if="${#fields.hasErrors('userName')}" th:errorclass="error" th:errors="*{userName}"></p>
       </div>
       <div class="mb-0 w-75 p-1">
-        <label class="form-label" for="password">Password:</label>
-        <input class="form-control" type="password" id="password" th:field="*{password}"/>
+        <label class="form-label" for="pass">Password:</label>
+        <input class="form-control" type="password" id="pass" th:field="*{password}"/>
+        <p class="alert alert-danger" th:if="${#fields.hasErrors('password')}" th:errorclass="error" th:errors="*{password}"></p>
       </div>
       <div class="mb-0 w-75 p-1">
-        <label class="form-label" for="name">Name:</label>
-        <input class="form-control" type="text" id="name" th:field="*{name}"/>
+        <label class="form-label" for="name_">Name:</label>
+        <input class="form-control" type="text" id="name_" th:field="*{name}"/>
+        <p class="alert alert-danger" th:if="${#fields.hasErrors('name')}" th:errorclass="error" th:errors="*{name}"></p>
       </div>
       <div class="w-75 p-3 text-end">
         <input type="reset" value="Reset" class="btn btn-danger"/>

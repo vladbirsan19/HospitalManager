@@ -1,8 +1,6 @@
 package com.siit.hospital_manager.service;
 
 
-;
-
 import com.siit.hospital_manager.exception.BusinessException;
 import com.siit.hospital_manager.repository.SpecialisationsRepository;
 import com.siit.hospital_manager.model.Specialisation;
@@ -22,19 +20,29 @@ public class SpecialisationService {
     private final SpecialisationsRepository specialisationRepository;
 
     public List<SpecialisationDto> findAll() {
-        return specialisationRepository.findAll()
+        return specialisationRepository
+                .findAll()
                 .stream()
-                .map(Specialisation::toDto)
+                .map(SpecialisationDto::new)
+                .toList();
+    }
+
+    public List<SpecialisationDto> findAllActive() {
+        return specialisationRepository
+                .findAllByIsActive(true)
+                .stream()
+                .map(SpecialisationDto::new)
                 .toList();
     }
 
     public Integer createSpecialisation(CreateSpecialisationDto createSpecialisationDto) {
         specialisationRepository
                 .findByName(createSpecialisationDto.getName())
-                .ifPresent(s -> {throw new BusinessException(HttpStatus.NOT_FOUND, "Specialisation with the name " + createSpecialisationDto.getName() + " is already present");
+                .ifPresent(s -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Specialisation with the name " + createSpecialisationDto.getName() + " is already present");
                 });
         Specialisation specialisation = Specialisation.builder()
                 .name(createSpecialisationDto.getName())
+                .isActive(true)
                 .build();
         return specialisationRepository.save(specialisation).getId();
     }
@@ -45,7 +53,7 @@ public class SpecialisationService {
                 .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "Specialisation with Id " + id + " not found"));
     }
 
-    public Specialisation changeSpecialisationName(CreateSpecialisationDto createSpecialisationDto, Integer id) {
+    public Specialisation updateSpecialisation(CreateSpecialisationDto createSpecialisationDto, Integer id) {
         Specialisation specialisation = specialisationRepository
                 .findById(id)
                 .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "Specialisation with Id " + id + " not found"));
@@ -56,6 +64,9 @@ public class SpecialisationService {
         if (createSpecialisationDto.getName() != null) {
             specialisation.setName(createSpecialisationDto.getName());
         }
+        if (createSpecialisationDto.getIsActive() == null) {
+            specialisation.setActive(true);
+        } else specialisation.setActive(!createSpecialisationDto.getIsActive());
         specialisationRepository.save(specialisation);
         return specialisation;
     }

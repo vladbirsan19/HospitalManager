@@ -50,12 +50,12 @@ public class AppointmentService {
                 .toList();
     }
 
-    public List<AppointmentDto> findAllByPatientUserName(String userName, AppointmentStatus appointmentStatus) {
+    public List<AppointmentDto> findAllByPatientUserNameAndActiveDoctor(String userName) {
         User patient = userRepository.findByUserName(userName).orElseThrow(
                 () -> new BusinessException(HttpStatus.NOT_FOUND, "User not found")
         );
 
-        List<Appointment> appointments = appointmentRepository.findAllByPatientIdAndAppointmentStatus(patient.getId(), appointmentStatus);
+        List<Appointment> appointments = appointmentRepository.findAllByPatientIdAndDoctorIsActive(patient.getId(), true);
         return appointments.stream()
                 .map(Appointment::toDto)
                 .toList();
@@ -66,7 +66,7 @@ public class AppointmentService {
                 () -> new BusinessException(HttpStatus.NOT_FOUND, "User not found")
         );
 
-        List<Appointment> appointments = appointmentRepository.findAllByDoctorIdAndAppointmentStatus(doctor.getId(), appointmentStatus);
+        List<Appointment> appointments = appointmentRepository.findAllByDoctorIdAndPatientIsActive(doctor.getId(), true);
         return appointments.stream()
                 .map(Appointment::toDto)
                 .toList();

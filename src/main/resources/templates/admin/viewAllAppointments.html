@@ -11,11 +11,9 @@
 
   <h2> Appointments list</h2>
 
-  <!--<table border="1" class="table table-striped">-->
-
-  <table class="table table-striped-columns w-100">
+  <table class="table table-striped-columns w-100 align-middle">
     <thead>
-    <tr>
+    <tr class="align-top">
       <th> Id</th>
       <th> Date</th>
       <th> Doctor name</th>
@@ -38,10 +36,10 @@
       <td class="appointmentId" th:text="${appointment.id}"> Id</td>
       <td th:text="${appointment.date}"> Date</td>
       <td>
-        <form action="#" class="doctorId" th:action="@{/mvc/doctor/viewDoctorProfile/} + ${{appointment.doctor.id}}" method="get">
-          <button class="btn btn-success" th:text="${appointment.doctor.name}" th:value="${appointment.doctor.name}"
+        <form action="#" th:action="@{/mvc/doctor/viewDoctorProfile/} + ${{appointment.doctor.id}}" method="get">
+          <button th:if="${appointment.doctor.isActive}" class="btn btn-success" th:text="${appointment.doctor.name}" th:value="${appointment.doctor.name}"></button>
+          <button th:unless="${appointment.doctor.isActive}" class="btn btn-light" th:text="${appointment.doctor.name}" th:value="${appointment.doctor.name}"
                   type="submit">
-            <i>details</i>
           </button>
         </form>
       </td>
@@ -51,9 +49,9 @@
       <td>
         <form action="#" class="patientId" th:action="@{/appointment/findAllByPatientId/} + ${{appointment.patient.id}}"
               method="get">
-          <button class="btn btn-success" th:text="${appointment.patient.email}" th:value="${appointment.patient.email}"
+          <button th:if="${appointment.patient.isActive}" class="btn btn-success" th:text="${appointment.patient.email}" th:value="${appointment.patient.email}"></button>
+          <button th:unless="${appointment.patient.isActive}" class="btn btn-light" th:text="${appointment.patient.email}" th:value="${appointment.patient.email}"
                   type="submit">
-            <i>details</i>
           </button>
         </form>
       </td>

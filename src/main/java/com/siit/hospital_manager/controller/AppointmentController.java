@@ -6,6 +6,7 @@ import com.siit.hospital_manager.model.dto.AppointmentDto;
 import com.siit.hospital_manager.model.dto.CreateAppointmentDto;
 import com.siit.hospital_manager.model.dto.UpdateAppointmentDto;
 import com.siit.hospital_manager.service.AppointmentService;
+import com.siit.hospital_manager.service.EmailSender;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,11 +31,12 @@ import static com.siit.hospital_manager.util.AuthUtils.isDoctor;
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
+    private final EmailSender emailSender;
 
     @GetMapping("/findAllByUserName")
     public String findAllByUserName(Model model, Principal principal, Authentication authentication, AppointmentStatus appointmentStatus) {
         if (isPatient(authentication)) {
-            List<AppointmentDto> appointmentsList = appointmentService.findAllByPatientUserName(principal.getName(),AppointmentStatus.CONFIRMED);
+            List<AppointmentDto> appointmentsList = appointmentService.findAllByPatientUserNameAndActiveDoctor(principal.getName());
             model.addAttribute("appointments", appointmentsList);
             return "appointment/viewAll";
         } else if (isDoctor(authentication)) {
@@ -53,7 +55,8 @@ public class AppointmentController {
         if (isAdmin(authentication)) {
             List<AppointmentDto> appointmentsList = appointmentService.findAllByPatientId(id, AppointmentStatus.CONFIRMED);
             model.addAttribute("appointments", appointmentsList);
-            return "admin/viewPatientAppointments";}
+            return "admin/viewPatientAppointments";
+        }
         return "index";
     }
 
@@ -62,7 +65,8 @@ public class AppointmentController {
         if (isAdmin(authentication)) {
             List<AppointmentDto> appointmentsList = appointmentService.findAllByDoctorId(id, AppointmentStatus.CONFIRMED);
             model.addAttribute("appointments", appointmentsList);
-            return "admin/viewPatientAppointments";}
+            return "admin/viewDoctorAppointments";
+        }
         return "index";
     }
 
@@ -84,16 +88,20 @@ public class AppointmentController {
     }
 
     @PostMapping("/submit/{doctorId}")
-    public String submitAppointmentForm(@Valid @ModelAttribute("createAppointmentDto") CreateAppointmentDto createAppointmentDto, BindingResult bindingResult, @PathVariable("doctorId") Integer id, Principal principal) {
-        if (bindingResult.hasErrors()) {
-            return "appointment/validationError";
-        }
+    public String submitAppointmentForm(@Valid CreateAppointmentDto createAppointmentDto, BindingResult bindingResult, @PathVariable("doctorId") Integer id, Principal principal, Model model) {
         appointmentService.addDoctorToCreateAppointmentDto(createAppointmentDto, id);
         appointmentService.addPatientToCreateAppointmentDto(createAppointmentDto, principal.getName());
+        model.addAttribute("createAppointmentDto", createAppointmentDto);
+        if (bindingResult.hasErrors()) {
+            return "appointment/create";
+        }
         try {
             appointmentService.createAppointment(createAppointmentDto);
-        }
-        catch (ResponseStatusException exception){
+            String to = createAppointmentDto.getPatient().getEmail();
+            String subject = "Appointment Confirmation";
+            String body = "Your appointment has been confirmed. We are waiting for you on;" + createAppointmentDto.getDate();
+            emailSender.sendAppointmentConfirmationEmail(to, subject, body);
+        } catch (ResponseStatusException exception) {
             return "/entityExistsError";
         }
         return "redirect:/appointment/findAllByUserName";

@@ -11,11 +11,9 @@
 
   <h2> Specialisations list</h2>
 
-  <!--<table border="1" class="table table-striped">-->
-
-  <table class="table table-striped-columns w-50">
+  <table class="table table-striped-columns w-100 align-middle">
     <thead>
-    <tr>
+    <tr class="align-top">
       <th> Specialisation Name</th>
     </tr>
     </thead>
@@ -29,7 +27,6 @@
               method="get">
           <button class="btn btn-success" th:text="${specialisation.name}" th:value="${specialisation.name}"
                   type="submit">
-            <i>Specialisation Name</i>
           </button>
         </form>
       </td>
