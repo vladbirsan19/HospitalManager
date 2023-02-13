@@ -19,6 +19,7 @@
       <th> Date</th>
       <th> Doctor name</th>
       <th> Doctor specialisation</th>
+      <th> Appointment Status</th>
       <th> Delete</th>
     </tr>
     </thead>
@@ -31,6 +32,7 @@
       <td th:text="${appointment.date}"> Date</td>
       <td th:text="${appointment.doctor.name}"> Doctor name</td>
       <td th:text="${appointment.doctor.specialisation.name}"> Specialisation name</td>
+      <td th:text="${appointment.appointmentStatus}"> Appointment Status</td>
       <td>
         <button class="delete-appointment-button"> Delete appointment</button>
       </td>

@@ -2,10 +2,8 @@ package com.siit.hospital_manager.controller;
 
 
 import com.siit.hospital_manager.model.dto.*;
-import com.siit.hospital_manager.service.AppointmentService;
 import com.siit.hospital_manager.service.DoctorService;
 import com.siit.hospital_manager.service.SpecialisationService;
-import com.siit.hospital_manager.util.AuthUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;

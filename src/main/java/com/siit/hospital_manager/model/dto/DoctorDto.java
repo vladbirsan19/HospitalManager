@@ -1,7 +1,6 @@
 package com.siit.hospital_manager.model.dto;;
 
 
-
 import com.siit.hospital_manager.model.Doctor;
 import com.siit.hospital_manager.model.Specialisation;
 import lombok.Builder;

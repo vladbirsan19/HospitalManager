@@ -5,7 +5,6 @@ import com.siit.hospital_manager.model.dto.CreateSpecialisationDto;
 import com.siit.hospital_manager.model.dto.SpecialisationDto;
 import com.siit.hospital_manager.service.DoctorService;
 import com.siit.hospital_manager.service.SpecialisationService;
-import com.siit.hospital_manager.util.AuthUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

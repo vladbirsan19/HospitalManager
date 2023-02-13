@@ -1,7 +1,6 @@
 package com.siit.hospital_manager.model;
 
 
-import com.siit.hospital_manager.model.dto.CreateDoctorDto;
 import com.siit.hospital_manager.model.dto.DoctorDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;

@@ -2,6 +2,7 @@ package com.siit.hospital_manager.controller;
 
 
 import com.siit.hospital_manager.model.dto.CreatePatientDto;
+import com.siit.hospital_manager.model.dto.UpdatePatientDto;
 import com.siit.hospital_manager.model.dto.PatientDto;
 import com.siit.hospital_manager.service.PatientService;
 import jakarta.validation.Valid;
@@ -59,7 +60,7 @@ public class PatientMvcController {
     }
 
     @PutMapping(value = "/updatePatient/{Id}")
-    public String updatePatient(@PathVariable("Id") Integer id, @Valid @ModelAttribute("patient") com.siit.hospital_manager.model.dto.UpdatePatientDto updatePatientDto, BindingResult bindingResult) {
+    public String updatePatient(@PathVariable("Id") Integer id, @Valid @ModelAttribute("patient") UpdatePatientDto updatePatientDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "patient/validationError";
         }

@@ -34,6 +34,11 @@ public class Appointment {
     @JoinColumn(name = "doctor_id", nullable = false)
     private Doctor doctor;
 
+    private AppointmentStatus appointmentStatus;
+    private String note;
+    private String diagnostic;
+    private String treatment;
+
     public AppointmentDto toDto() {
         String dateFormat = "dd-MM-yyyy HH:mm";
         String formattedDate = date.format(DateTimeFormatter.ofPattern(dateFormat));
@@ -44,6 +49,7 @@ public class Appointment {
                 .date(formattedDate)
                 .patient(patient)
                 .doctor(doctor)
+                .appointmentStatus(appointmentStatus)
                 .build();
     }
 

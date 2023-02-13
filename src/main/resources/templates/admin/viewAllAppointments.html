@@ -24,6 +24,9 @@
       <th> Patient last name</th>
       <th> Patient eMail</th>
       <th> Patient phone number</th>
+      <th> Appointment Status</th>
+      <th> View Appointment</th>
+      <th> Edit</th>
       <th> Delete</th>
     </tr>
     </thead>
@@ -55,6 +58,17 @@
         </form>
       </td>
       <td th:text="${appointment.patient.phoneNumber}"> Patient phone number</td>
+      <td th:text="${appointment.appointmentStatus}"> Appointment Status</td>
+      <td>
+        <button class="view-appointment-button" th:onclick="|window.location.href='/appointment/history/${appointment.id}'|">
+          View
+        </button>
+      </td>
+      <td>
+        <button class="edit-appointment-button" th:onclick="|window.location.href='/appointment/details/${appointment.id}'|">
+          Edit
+        </button>
+      </td>
       <td>
         <button class="delete-appointment-button"> Delete appointment</button>
       </td>

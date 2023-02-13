@@ -3,9 +3,7 @@ package com.siit.hospital_manager.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
