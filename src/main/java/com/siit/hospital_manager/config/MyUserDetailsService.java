@@ -1,8 +1,7 @@
 package com.siit.hospital_manager.config;
 
-
-import com.siit.hospital_manager.repository.UserRepository;
 import com.siit.hospital_manager.model.User;
+import com.siit.hospital_manager.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
