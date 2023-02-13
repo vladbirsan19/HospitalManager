@@ -23,7 +23,7 @@
   <tbody>
   <tr th:each="appointment : ${appointment}">
     <td class="appointmentId" th:text="${appointment.id}"> Id</td>
-    <td th:text="${appointment.date}"> Date</td>
+    <td th:text="${#temporals.format(appointment.date, 'dd-MM-yyyy HH:mm')}"> Date</td>
     <td th:text="${appointment.patient.firstName}"> Name</td>
     <td th:text="${appointment.patient.lastName}"> Name</td>
     <td th:text="${appointment.patient.age}"> Name</td>
