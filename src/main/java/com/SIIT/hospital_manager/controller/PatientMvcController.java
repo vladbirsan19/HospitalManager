@@ -51,7 +51,7 @@ public class PatientMvcController {
     @PostMapping("/submitCreatePatientForm")
     public String submitCreatePatientForm (@Valid CreatePatientDto createPatientDto, BindingResult bindingResult , RedirectAttributes redirectAttributes){
         if (bindingResult.hasErrors()) {
-            return "patient/validationError";
+            return "patient/createPatient";
         }
         try {
             patientService.createPatient(createPatientDto);

@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class CreateAppointmentDto {
 
-    @NotNull(message = "Date can't be null")
+    @NotNull(message = "Date can not be null")
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
     @Future(message="Appointments can be created starting with current date and time")
     private LocalDateTime date;

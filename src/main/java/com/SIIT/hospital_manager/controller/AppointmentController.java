@@ -81,12 +81,13 @@ public class AppointmentController {
     }
 
     @PostMapping("/submit/{doctorId}")
-    public String submitAppointmentForm(@Valid @ModelAttribute("createAppointmentDto") CreateAppointmentDto createAppointmentDto, BindingResult bindingResult, @PathVariable("doctorId") Integer id, Principal principal) {
-        if (bindingResult.hasErrors()) {
-            return "appointment/validationError";
-        }
+    public String submitAppointmentForm(@Valid CreateAppointmentDto createAppointmentDto, BindingResult bindingResult, @PathVariable("doctorId") Integer id, Principal principal, Model model) {
         appointmentService.addDoctorToCreateAppointmentDto(createAppointmentDto, id);
         appointmentService.addPatientToCreateAppointmentDto(createAppointmentDto, principal.getName());
+        model.addAttribute("createAppointmentDto", createAppointmentDto);
+        if (bindingResult.hasErrors()) {
+            return "appointment/create";
+        }
         try {
             appointmentService.createAppointment(createAppointmentDto);
         }

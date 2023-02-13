@@ -5,7 +5,6 @@ import com.siit.hospital_manager.model.dto.CreateSpecialisationDto;
 import com.siit.hospital_manager.model.dto.SpecialisationDto;
 import com.siit.hospital_manager.service.DoctorService;
 import com.siit.hospital_manager.service.SpecialisationService;
-import com.siit.hospital_manager.util.AuthUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -51,9 +50,9 @@ public class SpecialisationController {
     }
 
     @PostMapping(value = "/submit")
-    public String createSpecialisation(@ModelAttribute("specialisation") CreateSpecialisationDto createSpecialisationDto, BindingResult bindingResult){
+    public String createSpecialisation(@Valid @ModelAttribute("specialisation") CreateSpecialisationDto createSpecialisationDto, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
-            return "specialisation/validationError";
+            return "specialisation/create";
         }
         try {
             specialisationService.createSpecialisation(createSpecialisationDto);
@@ -74,9 +73,13 @@ public class SpecialisationController {
     @PutMapping("/{Id}")
     public String updateSpecialisation(@PathVariable("Id") Integer id, @Valid @ModelAttribute("specialisation") CreateSpecialisationDto createSpecialisationDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "specialisation/validationError";
+            return "specialisation/viewAll";
         }
-        specialisationService.updateSpecialisation(createSpecialisationDto, id);
+        try {
+            specialisationService.updateSpecialisation(createSpecialisationDto, id);
+        } catch (ResponseStatusException exception) {
+            return "/entityExistsError";
+        }
         return "redirect:/specialisation/viewAll";
     }
 

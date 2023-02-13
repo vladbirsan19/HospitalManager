@@ -79,8 +79,9 @@ public class DoctorController {
     }
 
     @GetMapping("/createDoctor/{specialisationId}")
-    public String showCreateForm(@PathVariable("specialisationId") Integer specialisationId, @ModelAttribute("doctorDto") CreateDoctorDto createDoctorDto) {
+    public String showCreateForm(@PathVariable("specialisationId") Integer specialisationId, CreateDoctorDto createDoctorDto, Model model) {
         doctorService.addSpecialisationToCreateDoctorDto(createDoctorDto, specialisationId);
+        model.addAttribute("createDoctorDto", createDoctorDto);
         return "doctor/createDoctor";
     }
 
@@ -90,11 +91,10 @@ public class DoctorController {
                     @ApiResponse(responseCode = "400", description = "Some fields are invalid or missing")}
     )
     public String createDoctor(@Valid CreateDoctorDto createDoctorDto, @PathVariable("specialisationId") Integer specialisationId, BindingResult bindingResult, Model model){
-
-        if (bindingResult.hasErrors()) {
-            return "doctor/validationError";
-        }
         doctorService.addSpecialisationToCreateDoctorDto(createDoctorDto, specialisationId);
+        if (bindingResult.hasErrors()) {
+            return "doctor/createDoctor";
+        }
         try {
             doctorService.createDoctor(createDoctorDto);
         } catch (ResponseStatusException exception) {
