@@ -6,7 +6,7 @@ import com.siit.hospital_manager.model.dto.AppointmentDto;
 import com.siit.hospital_manager.model.dto.CreateAppointmentDto;
 import com.siit.hospital_manager.model.dto.UpdateAppointmentDto;
 import com.siit.hospital_manager.service.AppointmentService;
-import com.siit.hospital_manager.service.EmailSender;
+import com.siit.hospital_manager.service.EmailSenderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,7 +31,7 @@ import static com.siit.hospital_manager.util.AuthUtils.isDoctor;
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
-    private final EmailSender emailSender;
+    private final EmailSenderService emailSenderService;
 
     @GetMapping("/findAllByUserName")
     public String findAllByUserName(Model model, Principal principal, Authentication authentication, AppointmentStatus appointmentStatus) {
@@ -81,7 +81,9 @@ public class AppointmentController {
     }
 
     @GetMapping("/create/{doctorId}")
-    public String createAppointment(@PathVariable("doctorId") Integer id, @ModelAttribute("createAppointmentDto") CreateAppointmentDto createAppointmentDto, Principal principal) {
+    public String createAppointment(@PathVariable("doctorId") Integer id, CreateAppointmentDto createAppointmentDto, Principal principal, Model model) {
+        model.addAttribute("createAppointmentDto", createAppointmentDto);
+        model.addAttribute("doctorId", id);
         appointmentService.addDoctorToCreateAppointmentDto(createAppointmentDto, id);
         appointmentService.addPatientToCreateAppointmentDto(createAppointmentDto, principal.getName());
         return "appointment/create";
@@ -97,12 +99,13 @@ public class AppointmentController {
         }
         try {
             appointmentService.createAppointment(createAppointmentDto);
-            String to = createAppointmentDto.getPatient().getEmail();
-            String subject = "Appointment Confirmation";
-            String body = "Your appointment has been confirmed. We are waiting for you on;" + createAppointmentDto.getDate();
-            emailSender.sendAppointmentConfirmationEmail(to, subject, body);
         } catch (ResponseStatusException exception) {
             return "/entityExistsError";
+        }
+        try {
+            emailSenderService.sendAppointmentConfirmationEmail(createAppointmentDto);
+        } catch (Exception ex) {
+            return "appointment/authenticationError";
         }
         return "redirect:/appointment/findAllByUserName";
     }
@@ -111,7 +114,6 @@ public class AppointmentController {
     public String viewAppointmentById(Model model, @PathVariable Integer id){
         Appointment appointment = appointmentService.findAppointmentById(id);
         model.addAttribute("appointment", appointment);
-
         return "appointment/details";
     }
 

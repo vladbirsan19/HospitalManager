@@ -25,7 +25,6 @@ public class Appointment {
 
     @NotNull(message = "Date should not be null")
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
-    //    @Future(message="Appointments can be created starting with current date and time")
     private LocalDateTime date;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "patient_id", nullable = false)

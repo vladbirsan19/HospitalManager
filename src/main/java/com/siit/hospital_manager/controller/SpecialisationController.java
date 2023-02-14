@@ -73,7 +73,7 @@ public class SpecialisationController {
     @PutMapping("/{Id}")
     public String updateSpecialisation(@PathVariable("Id") Integer id, @Valid @ModelAttribute("specialisation") CreateSpecialisationDto createSpecialisationDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "specialisation/viewAll";
+            return "specialisation/validationError";
         }
         try {
             specialisationService.updateSpecialisation(createSpecialisationDto, id);

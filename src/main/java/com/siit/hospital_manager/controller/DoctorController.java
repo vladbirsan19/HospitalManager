@@ -90,7 +90,7 @@ public class DoctorController {
             responses = {@ApiResponse(responseCode = "201", description = "All went well"),
                     @ApiResponse(responseCode = "400", description = "Some fields are invalid or missing")}
     )
-    public String createDoctor(@Valid CreateDoctorDto createDoctorDto, @PathVariable("specialisationId") Integer specialisationId, BindingResult bindingResult, Model model){
+    public String createDoctor(@Valid CreateDoctorDto createDoctorDto, BindingResult bindingResult, @PathVariable("specialisationId") Integer specialisationId, Model model){
         doctorService.addSpecialisationToCreateDoctorDto(createDoctorDto, specialisationId);
         if (bindingResult.hasErrors()) {
             return "doctor/createDoctor";
