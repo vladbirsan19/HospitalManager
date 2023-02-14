@@ -132,8 +132,7 @@ public class AppointmentService {
     }
 
     public Appointment findAppointmentById(Integer id) {
-        Appointment appointment = appointmentRepository.findAppointmentById(id);
-        return appointment;
+        return appointmentRepository.findAppointmentById(id);
     }
     public void updateAppointment(UpdateAppointmentDto updateAppointmentDto) {
         Appointment appointment = appointmentRepository
@@ -143,7 +142,6 @@ public class AppointmentService {
         if(updateAppointmentDto.getNote() != null) {
             appointment.setNote(updateAppointmentDto.getNote());
         }
-
         if(updateAppointmentDto.getDiagnostic() != null) {
             appointment.setDiagnostic(updateAppointmentDto.getDiagnostic());
         }
@@ -154,6 +152,7 @@ public class AppointmentService {
 
         appointmentRepository.save(appointment);
     }
+
     public List<AppointmentDto> findAllByDoctorAndStatus(String doctorName, AppointmentStatus appointmentStatus) {
         Doctor doctor = doctorRepository.findByName(doctorName).orElseThrow(
                 () -> new BusinessException(HttpStatus.NOT_FOUND, "Doctor not found")
@@ -166,6 +165,7 @@ public class AppointmentService {
                 .toList();
 
     }
+
     public List<AppointmentDto> findAllByUserName(String userName, AppointmentStatus appointmentStatus) {
         User patient = userRepository.findByUserName(userName).orElseThrow(
                 () -> new BusinessException(HttpStatus.NOT_FOUND, "User not found")

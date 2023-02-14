@@ -11,7 +11,8 @@
 
 
     <h2 th:if="${appointments.isEmpty()}">Doctor Appointments List </h2>
-    <h2 th:unless="${appointments.isEmpty()}" th:text="'Doctor id and name: ' + ${appointments[0].doctor.id} + ' - ' +${appointments[0].doctor.name} + ' appointments list for ' + ${appointments[0].doctor.specialisation.name} + ' specialisation'">
+    <h2 th:unless="${appointments.isEmpty()}"
+        th:text="'Doctor id and name: ' + ${appointments[0].doctor.id} + ' - ' +${appointments[0].doctor.name} + ' appointments list for ' + ${appointments[0].doctor.specialisation.name} + ' specialisation'">
     </h2>
 
     <table class="table table-striped-columns w-100 align-middle">
@@ -47,7 +48,7 @@
             <td th:text="${appointment.patient.email}"> Patient eMail</td>
             <td th:text="${appointment.patient.phoneNumber}"> Patient phone number</td>
             <td>
-                <button class="delete-appointment-button"> Delete appointment</button>
+                <button class="delete-appointment-button btn btn-danger"> Delete appointment</button>
             </td>
         </tr>
         </tbody>
@@ -78,10 +79,6 @@
             }
         });
     });
-
-
-
-
 
     </script>
 

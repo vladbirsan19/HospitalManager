@@ -1,59 +1,75 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="UTF-8">
-  <title>Create a doctor</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Create a doctor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 </head>
+<h2>Create doctor</h2>
 
 <body>
-<div class="w-50 mx-auto content-between-l">
-  <br/>
-  <h2>Create doctor</h2>
-  <div>
-    <form action="#" th:object="${createDoctorDto}" th:action="@{/mvc/doctor/submitCreateDoctorForm/} + *{{specialisation.id}}"
-          method="post">
-      <div class="mb-0 w-75 p-1">
-        <label class="form-label" for="user_Name">UserName:</label>
-        <input class="form-control" type="text" id="user_Name" th:field="*{userName}"/>
-        <p class="alert alert-danger" th:if="${#fields.hasErrors('userName')}" th:errorclass="error" th:errors="*{userName}"></p>
-      </div>
-      <div class="mb-0 w-75 p-1">
-        <label class="form-label" for="pass">Password:</label>
-        <input class="form-control" type="password" id="pass" th:field="*{password}"/>
-        <p class="alert alert-danger" th:if="${#fields.hasErrors('password')}" th:errorclass="error" th:errors="*{password}"></p>
-      </div>
-      <div class="mb-0 w-75 p-1">
-        <label class="form-label" for="name_">Name:</label>
-        <input class="form-control" type="text" id="name_" th:field="*{name}"/>
-        <p class="alert alert-danger" th:if="${#fields.hasErrors('name')}" th:errorclass="error" th:errors="*{name}"></p>
-      </div>
-      <div class="w-75 p-3 text-end">
-        <input type="reset" value="Reset" class="btn btn-danger"/>
-        <input type="submit" value="Submit" class="btn btn-success"/>
-      </div>
-      <div th:if="${#fields.hasAnyErrors()}">
-        <ul>
-          <li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
-        </ul>
-      </div>
-    </form>
-  </div>
-</div>
-<p></p>
 
-<button class="btn btn-primary" onclick="history.back()">Go Back</button>
+<div class="container">
+    <form th:object="${createDoctorDto}" th:action="@{/mvc/doctor/submitCreateDoctorForm/} + *{{specialisation.id}}"
+          method="post"
+          novalidate>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label text-success" for="userName">UserName:</label>
+            <div class="col-sm-3">
+                <input class="form-control" type="text" id="userName" th:field="*{userName}"/>
+            </div>
+            <div class="col-sm-6">
+                <small class="text-danger" th:if="${#fields.hasErrors('userName')}" th:errorclass="error"
+                       th:errors="*{userName}">
+                </small>
+            </div>
+        </div>
+        <p></p>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label text-success" for="password">Password:</label>
+            <div class="col-sm-3">
+                <input class="form-control" type="password" id="password" th:field="*{password}"/>
+            </div>
+            <div class="col-sm-6">
+                <small class="text-danger" th:if="${#fields.hasErrors('password')}" th:errorclass="error"
+                       th:errors="*{password}">
+                </small>
+            </div>
+        </div>
+        <p></p>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label text-success" for="name">Name:</label>
+            <div class="col-sm-3">
+                <input class="form-control" type="text" id="name" th:field="*{name}"/>
+            </div>
+            <div class="col-sm-6">
+                <small class="text-danger" th:if="${#fields.hasErrors('name')}" th:errorclass="error"
+                       th:errors="*{name}">
+                </small>
+            </div>
+        </div>
+        <p></p>
+        <div class="w-50 p-3 text-end">
+            <input type="reset" value="Reset" class="btn btn-danger"/>
+            <input type="submit" value="Submit" class="btn btn-success"/>
+            <br>
+        </div>
+    </form>
+</div>
+
+
 <p></p>
-<button class="btn btn-primary" onclick="window.location.href='/specialisation/viewAll';">View all specialisations</button>
+<button class="btn btn-primary" onclick="window.location.href='/specialisation/viewAll';">View all specialisations
+</button>
 <p></p>
 <button class="btn btn-secondary" onclick="window.location.href='/dashboard';">
-  Main Menu
+    Main Menu
 </button>
 <p></p>
 
 <button class="btn btn-secondary" onclick="window.location.href='/logout';">
-  Sign out
+    Sign out
 </button>
 </body>
 </html>

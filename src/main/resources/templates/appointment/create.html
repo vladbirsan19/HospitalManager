@@ -38,13 +38,14 @@
         </tbody>
     </table>
     <div class="container">
-        <form action="#" th:object="${createAppointmentDto}"
+        <form action="#" id="createForm" th:object="${createAppointmentDto}"
               th:action="@{/appointment/submit/} + *{{doctor.id}}"
               method="post">
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label text-success" for="date">Select Date and Time::</label>
+                <label class="col-sm-2 col-form-label text-success" for="date">Select Date and Time:</label>
                 <div class="col-sm-3">
-                    <input class="form-control" type="datetime-local" id="date" th:field="*{date}"/>
+                    <input class="form-control" type="datetime-local" id="date" th:field="*{date}"
+                           onchange="validateDate()"/>
                 </div>
                 <div class="col-sm-6">
                     <small class="text-danger" th:if="${#fields.hasErrors('date')}" th:errorclass="error"
@@ -55,14 +56,37 @@
             <p></p>
             <div>
                 <input type="reset" value="Reset" class="btn btn-danger"/>
-                <input type="submit" value="Submit" class="btn btn-success"/>
+                <input type="submit" value="Submit" id="submit" class="btn btn-success" disabled/>
             </div>
         </form>
     </div>
 
+    <script>
+    function validateDate() {
+        var bt = document.getElementById('submit');
+        var today = new Date();
+        var minDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+        var maxDate = new Date(today.getFullYear(), today.getMonth() + 3, today.getDate());
+
+        var dateInput = document.getElementById("date");
+        var selectedDate = new Date(dateInput.value);
+        var hour = selectedDate.getHours();
+
+        if (selectedDate < minDate || selectedDate > maxDate || hour < 8 || hour > 15) {
+            alert("Please select a date between tomorrow and 3 months from today, with time in a range of 08:00 AM to 4:00 PM.");
+            bt.disabled = true;
+            return false;
+        }
+        bt.disabled = false;
+    }
+
+    </script>
+
     <p></p>
 
-    <button class="btn btn-primary" onclick="history.back()">Go Back</button>
+    <button class="btn btn-primary" th:onclick="|window.location.href='/mvc/doctor/viewDoctorProfile/${doctorId}'|">Go
+        Back
+    </button>
     <p></p>
     <button class="btn btn-primary" onclick="window.location.href='/specialisation/viewAll';">View all specialisations
     </button>

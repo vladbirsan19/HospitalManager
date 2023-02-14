@@ -59,6 +59,7 @@ public class SpecialisationService {
                 .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "Specialisation with Id " + id + " not found"));
         specialisationRepository
                 .findByName(createSpecialisationDto.getName())
+                .filter(a -> !(a.equals(specialisation)))
                 .ifPresent(s -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Specialisation with the name " + createSpecialisationDto.getName() + " is already present");
                 });
         if (createSpecialisationDto.getName() != null) {
