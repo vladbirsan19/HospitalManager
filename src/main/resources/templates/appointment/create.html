@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Create Appointment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+</head>
+<body>
+<div class="w-100 mx-auto content-between-l">
+
+    <h2> Create Appointment</h2>
+    <p></p>
+
+    <table class="table table-striped-columns">
+        <thead>
+        <tr>
+            <th> Doctor Name</th>
+            <th> Doctor Specialisation</th>
+            <th> Patient First Name</th>
+            <th> Patient Last Name</th>
+            <th> Patient Age</th>
+            <th> Patient eMail</th>
+            <th> Patient phone number</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><span th:text="${createAppointmentDto.doctor.name}"> Doctor Name </span></td>
+            <td><span th:text="${createAppointmentDto.doctor.specialisation.name}"> Doctor Specialisation </span></td>
+            <td><span th:text="${createAppointmentDto.patient.firstName}"> Patient First Name </span></td>
+            <td><span th:text="${createAppointmentDto.patient.lastName}"> Patient Last Name </span></td>
+            <td><span th:text="${createAppointmentDto.patient.age}"> Patient Age </span></td>
+            <td><span th:text="${createAppointmentDto.patient.email}"> Patient eMail </span></td>
+            <td><span th:text="${createAppointmentDto.patient.phoneNumber}"> Patient phone number </span></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="container">
+        <form action="#" id="createForm" th:object="${createAppointmentDto}"
+              th:action="@{/appointment/submit/} + *{{doctor.id}}"
+              method="post">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label text-success" for="date">Select Date and Time:</label>
+                <div class="col-sm-3">
+                    <input class="form-control" type="datetime-local" id="date" th:field="*{date}"
+                           onchange="validateDate()"/>
+                </div>
+                <div class="col-sm-6">
+                    <small class="text-danger" th:if="${#fields.hasErrors('date')}" th:errorclass="error"
+                           th:errors="*{date}">
+                    </small>
+                </div>
+            </div>
+            <p></p>
+            <div>
+                <input type="reset" value="Reset" class="btn btn-danger"/>
+                <input type="submit" value="Submit" id="submit" class="btn btn-success" disabled/>
+            </div>
+        </form>
+    </div>
+
+    <script>
+    function validateDate() {
+        var bt = document.getElementById('submit');
+        var today = new Date();
+        var minDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+        var maxDate = new Date(today.getFullYear(), today.getMonth() + 3, today.getDate());
+
+        var dateInput = document.getElementById("date");
+        var selectedDate = new Date(dateInput.value);
+        var hour = selectedDate.getHours();
+
+        if (selectedDate < minDate || selectedDate > maxDate || hour < 8 || hour > 15) {
+            alert("Please select a date between tomorrow and 3 months from today, with time in a range of 08:00 AM to 4:00 PM.");
+            bt.disabled = true;
+            return false;
+        }
+        bt.disabled = false;
+    }
+
+    </script>
+
+    <p></p>
+
+    <button class="btn btn-primary" th:onclick="|window.location.href='/mvc/doctor/viewDoctorProfile/${doctorId}'|">Go
+        Back
+    </button>
+    <p></p>
+    <button class="btn btn-primary" onclick="window.location.href='/specialisation/viewAll';">View all specialisations
+    </button>
+    <p></p>
+    <button class="btn btn-secondary" onclick="window.location.href='/dashboard';">
+        Main Menu
+    </button>
+    <p></p>
+    <button class="btn btn-secondary" onclick="window.location.href='/logout';">
+        Sign out
+    </button>
+</div>
+</body>

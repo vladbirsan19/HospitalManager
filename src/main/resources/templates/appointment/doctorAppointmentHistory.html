@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <title>Appointment List</title>
+</head>
+<body>
+
+<h2>Appointment list</h2>
+
+<table class="table table-striped-columns w-100 align-middle">
+    <thead>
+    <tr class="align-top">
+        <th> Id</th>
+        <th> Date</th>
+        <th> First name</th>
+        <th> Last name</th>
+        <th> Age</th>
+        <th> Phone Number</th>
+        <th> Email</th>
+        <th> Status</th>
+        <th> View appointment</th>
+        <th> Edit appointment</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${appointments.isEmpty()}">
+        <td colspan="2"> There are no old appointments</td>
+    </tr>
+    <tr th:each="appointment : ${appointments}">
+        <td class="appointmentId" th:text="${appointment.id}"> Id</td>
+        <td th:text="${appointment.date}"> Date</td>
+        <td th:text="${appointment.patient.firstName}"> Patient First Name</td>
+        <td th:text="${appointment.patient.lastName}"> Patient Last Name</td>
+        <td th:text="${appointment.patient.age}"> Patient Age</td>
+        <td th:text="${appointment.patient.phoneNumber}"> Patient Phone Number</td>
+        <td th:text="${appointment.patient.email}"> Patient Email</td>
+        <td th:text="${appointment.appointmentStatus}"> Appointment Status</td>
+
+        <td>
+            <button class="view-appointment-button btn btn-success"
+                    th:onclick="|window.location.href='/appointment/history/${appointment.id}'|">
+                View
+            </button>
+        </td>
+
+        <td>
+            <button class="edit-appointment-button btn btn-danger"
+                    th:onclick="|window.location.href='/appointment/details/${appointment.id}'|">
+                Edit
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p></p>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+
+<script>
+
+
+    const viewButtons = document.querySelectorAll('.view-appointment-button');
+    viewButtons.forEach(function(viewButton) {
+        viewButton.addEventListener("click", function() {
+
+                const appointmentId = this.parentNode.parentNode.querySelector(".appointmentId").textContent;
+                fetch('/appointment/details/' + appointmentId, {
+                    method: 'GET'
+                });
+
+        });
+    });
+
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<button class="btn btn-secondary" onclick="window.location.href='/dashboard';">
+    Main Menu
+</button>
+<p></p>
+<button class="btn btn-secondary" onclick="window.location.href='/logout';">
+    Sign out
+</button>
+</body>
+</html>

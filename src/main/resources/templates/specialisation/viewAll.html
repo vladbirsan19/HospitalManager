@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <title>Specialisations list</title>
+</head>
+<body>
+<div class="w-100 mx-auto content-between-l">
+
+  <h2> Specialisations list</h2>
+
+  <table class="table table-striped-columns w-100 align-middle">
+    <thead>
+    <tr class="align-top">
+      <th> Specialisation Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${specialisations.isEmpty()}">
+      <td colspan="2"> No specialisations yet</td>
+    </tr>
+    <tr th:each="specialisation : ${specialisations}">
+      <td>
+        <form action="#" th:action="@{/mvc/doctor/viewDoctorsBySpecialisation/} + ${{specialisation.id}}"
+              method="get">
+          <button class="btn btn-success" th:text="${specialisation.name}" th:value="${specialisation.name}"
+                  type="submit">
+          </button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <p></p>
+
+  <button class="btn btn-primary" onclick="history.back()">Go Back</button>
+
+  <p></p>
+  <button class="btn btn-secondary" onclick="window.location.href='/dashboard';">
+    Main Menu
+  </button>
+  <p></p>
+  <button class="btn btn-secondary" onclick="window.location.href='/logout';">
+    Sign out
+  </button>
+</div>
+</body>
+</html>

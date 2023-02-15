@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <title>Doctor Profile</title>
+</head>
+<body>
+<div class="w-100 mx-auto content-between-l">
+    <h2> Doctor Profile</h2>
+
+    <table class="table table-striped-columns w-100 align-middle" style="width: 100%">
+        <colgroup>
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 25%;">
+            <col span="1" style="width: 30%;">
+            <col span="1" style="width: 15%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 10%;">
+        </colgroup>
+        <thead>
+        <tr class="align-top">
+            <th> Doctor Id</th>
+            <th> Doctor Name</th>
+            <th> Specialisation</th>
+            <th> Hide doctor</th>
+            <th> Update doctor</th>
+            <th> Delete doctor</th>
+        </tr>
+        </thead>
+        <tbody>
+        <td>
+            <form action="#" class="doctorId" th:action="@{/appointment/findAllByDoctorId/} + ${{doctor.id}}"
+                  method="get">
+                <button th:if="${doctor.isActive}" class="btn btn-success" th:text="${doctor.id}"
+                        th:value="${doctor.id}"></button>
+                <button th:unless="${doctor.isActive}" class="btn btn-light" th:text="${doctor.id}"
+                        th:value="${doctor.id}"
+                        type="submit">
+                </button>
+            </form>
+        </td>
+        <form action="#" th:method="PUT" th:action="@{/mvc/doctor/docProfile/updateDoctor/} + ${{doctor.id}}"
+              method="post">
+            <td>
+                <div class="input-group">
+                    <input th:if="${doctor.isActive}" type="text" class="form-control" th:value="${doctor.name}"
+                           th:name="name"/>
+                    <input th:unless="${doctor.isActive}" type="text" class="form-control" th:value="${doctor.name}"
+                           th:name="name" readonly/>
+                </div>
+            </td>
+            <td>
+                <div class="input-group">
+                    <select th:if="${doctor.isActive}" class="btn btn-outline-secondary dropdown-toggle"
+                            type="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false" th:value="${doctor.specialisation.name}"
+                            th:name="specialisation.name">
+                        <option th:text="${doctor.specialisation.name}"></option>
+                        <option th:each="spec : ${specialisations}" th:value="${spec.name}"
+                                th:text="${spec.name}"></option>
+                    </select>
+                    <select th:unless="${doctor.isActive}" class="btn btn-outline-secondary dropdown-toggle"
+                            type="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false" th:value="${doctor.specialisation.name}"
+                            th:name="specialisation.name">
+                        <option th:text="${doctor.specialisation.name}"></option>
+                    </select>
+                </div>
+            </td>
+            <td>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" id="flexSwitchCheckDefault" type="checkbox"
+                           th:checked="${!doctor.isActive}" name="isActive">
+                </div>
+            </td>
+            <td>
+                <div class="input-group-append">
+                    <button th:if="${doctor.isActive}" class="btn btn-outline-warning" type="submit">Update</button>
+                    <button th:unless="${doctor.isActive}" class="btn btn-outline-dark" type="submit">Update
+                    </button>
+                </div>
+            </td>
+        </form>
+        <td>
+            <button class="delete-doctor-button btn btn-danger"> Delete doctor</button>
+        </td>
+        </tbody>
+    </table>
+
+    <p></p>
+    <script>
+    const deleteButtons = document.querySelectorAll('.delete-doctor-button');
+    deleteButtons.forEach(function(deleteButton) {
+        deleteButton.addEventListener("click", function() {
+            if (confirm("By doing this, all appointments related to the doctor will be deleted as well. Are you sure you want to delete this doctor?")) {
+                const doctorId = this.parentNode.parentNode.querySelector(".doctorId").textContent;
+                fetch('/mvc/doctor/' + doctorId, {
+                    method: 'DELETE'
+                }).then(function(response) {
+                    if (response.ok) {
+                        alert("Doctor deleted successfully");
+                        location.assign("/specialisation/viewAll");
+                    } else {
+                        alert("Error deleting doctor");
+                    }
+                });
+            }
+        });
+    });
+
+
+
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+            crossorigin="anonymous"></script>
+
+    <button class="btn btn-primary" onclick="window.location.href='/specialisation/viewAll';">View all specialisations
+    </button>
+    <p></p>
+    <button class="btn btn-secondary" onclick="window.location.href='/dashboard';">
+        Main Menu
+    </button>
+    <p></p>
+
+    <button class="btn btn-secondary" onclick="window.location.href='/logout';">
+        Sign out
+    </button>
+</div>
+</body>
+</html>
